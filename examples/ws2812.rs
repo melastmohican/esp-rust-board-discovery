@@ -1,4 +1,4 @@
-//! # WS2812 RGB LED Example for ESP32-C3
+//! # WS2812 RGB LED Example for Rust ESP Board (ESP32-C3-DevKit-RUST-1)
 //!
 //! This example drives a WS2812 addressable RGB LED connected to GPIO2.
 //! It cycles through rainbow colors using HSV color space with gamma correction.
