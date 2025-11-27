@@ -90,6 +90,73 @@ cargo run --example icm42670p
 
 **Output:** Temperature, humidity, and gyroscope X/Y/Z values
 
+#### bme280_i2c
+Reads temperature, humidity, and atmospheric pressure from an external BME280 sensor. This is a popular environmental sensor that measures all three parameters in one device.
+
+This example is configured for the **Adafruit BME280** breakout board connected via **Qwiic/STEMMA QT** cable.
+
+```bash
+cargo run --example bme280_i2c
+```
+
+**Hardware:**
+- Sensor: Adafruit BME280 Temperature Humidity Pressure Sensor
+- Connection: Qwiic/STEMMA QT cable (plug and play I2C connection)
+
+**Wiring with Qwiic/STEMMA QT:**
+
+Simply connect the Qwiic/STEMMA QT cable between the board and sensor - no separate wires needed!
+
+```
+BME280 Pin -> Rust ESP Board
+----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO8
+SDA (blue)  -> GPIO10
+```
+
+**I2C Address:**
+- Adafruit BME280: `0x77` (configured in code)
+- Generic modules: Often `0x76` (change to `BME280::new_primary()` in code)
+
+**Output:** Temperature in °C, humidity in %, and atmospheric pressure in hPa
+
+#### hs3003_i2c
+Reads temperature and humidity from the Renesas HS3003 sensor using a custom driver implementation. This example is configured for the **Arduino Modulino Thermo** connected via **Qwiic/STEMMA QT** cable.
+
+```bash
+cargo run --example hs3003_i2c
+```
+
+**Hardware:**
+- Sensor: Arduino Modulino Thermo (Renesas HS3003)
+- Connection: Qwiic/STEMMA QT cable (plug and play I2C connection)
+
+**Wiring with Qwiic/STEMMA QT:**
+
+Simply connect the Qwiic/STEMMA QT cable between the board and Modulino Thermo - no separate wires needed!
+
+```
+Modulino Pin -> Rust ESP Board
+------------    --------------
+GND (black)  -> GND
+VCC (red)    -> 3.3V
+SCL (yellow) -> GPIO8
+SDA (blue)   -> GPIO10
+```
+
+**I2C Address:**
+- HS3003: `0x44` (fixed address)
+
+**Features:**
+- 14-bit resolution for temperature and humidity
+- Temperature: -40°C to +125°C (±0.2°C accuracy)
+- Humidity: 0-100% RH (±1.5% accuracy)
+- Custom driver implementation (no external crate needed)
+
+**Output:** Temperature in °C and humidity in %
+
 ### Display Examples (SSD1306 OLED)
 
 These examples require an external 128x64 SSD1306 OLED display connected via I2C.
@@ -141,6 +208,7 @@ Key dependencies used in this project:
 - **embedded-graphics** - 2D graphics library
 - **shtcx** - SHTC3 sensor driver
 - **icm42670** - ICM42670 IMU driver
+- **bme280** - BME280 environmental sensor driver
 - **defmt** - Efficient logging framework
 
 ## Building and Flashing
