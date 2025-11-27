@@ -9,13 +9,8 @@
 use defmt::info;
 use esp_hal::clock::CpuClock;
 use esp_hal::main;
-use esp_hal::{delay::Delay, rmt::Rmt, time::Rate};
-use esp_hal_smartled::{SmartLedsAdapter, smart_led_buffer};
+use esp_hal::time::{Duration, Instant};
 use panic_rtt_target as _;
-use smart_leds::{
-    RGB8, SmartLedsWrite, brightness, gamma,
-    hsv::{Hsv, hsv2rgb},
-};
 
 esp_bootloader_esp_idf::esp_app_desc!();
 
@@ -24,49 +19,13 @@ fn main() -> ! {
     rtt_target::rtt_init_defmt!();
 
     let config = esp_hal::Config::default().with_cpu_clock(CpuClock::max());
-    let peripherals = esp_hal::init(config);
+    let _peripherals = esp_hal::init(config);
 
-    info!("Initializing WS2812 LED on GPIO2...");
-
-    // Configure RMT (Remote Control Transceiver) peripheral for WS2812
-    let rmt = Rmt::new(peripherals.RMT, Rate::from_mhz(80)).expect("Failed to initialize RMT");
-
-    // Use RMT channel 0 for the LED control
-    let rmt_channel = rmt.channel0;
-
-    // Create a buffer for one LED
-    let mut rmt_buffer = smart_led_buffer!(1);
-
-    // Create SmartLED adapter using GPIO2
-    let mut led = SmartLedsAdapter::new(rmt_channel, peripherals.GPIO2, &mut rmt_buffer);
-
-    let delay = Delay::new();
-
-    // Initial HSV color (hue, saturation, value/brightness)
-    let mut color = Hsv {
-        hue: 0,
-        sat: 255,
-        val: 255,
-    };
-
-    // Brightness level (0-255, setting to 10 to avoid too bright output)
-    let brightness_level = 10;
-
-    info!("Starting rainbow animation on WS2812 LED...");
+    info!("Hello World from Rust ESP Board (ESP32-C3-DevKit-RUST-1)!");
 
     loop {
-        // Iterate through all hues to create rainbow effect
-        for hue in 0..=255 {
-            color.hue = hue;
-
-            // Convert from HSV to RGB color space
-            let data: RGB8 = hsv2rgb(color);
-
-            // Apply gamma correction and brightness limiting, then write to LED
-            led.write(brightness(gamma([data].into_iter()), brightness_level))
-                .unwrap();
-
-            delay.delay_millis(20);
-        }
+        info!("Hello world!");
+        let delay_start = Instant::now();
+        while delay_start.elapsed() < Duration::from_millis(1000) {}
     }
 }
