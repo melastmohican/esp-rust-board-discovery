@@ -1,13 +1,12 @@
+//! # WS2812 RGB LED Example for ESP32-C3
+//!
+//! This example drives a WS2812 addressable RGB LED connected to GPIO2.
+//! It cycles through rainbow colors using HSV color space with gamma correction.
+
 #![no_std]
 #![no_main]
-#![deny(
-    clippy::mem_forget,
-    reason = "mem::forget is generally not safe to do with esp_hal types, especially those \
-    holding buffers for the duration of a data transfer."
-)]
 
 use defmt::info;
-use esp_hal::clock::CpuClock;
 use esp_hal::main;
 use esp_hal::{delay::Delay, rmt::Rmt, time::Rate};
 use esp_hal_smartled::{SmartLedsAdapter, smart_led_buffer};
@@ -23,22 +22,23 @@ esp_bootloader_esp_idf::esp_app_desc!();
 fn main() -> ! {
     rtt_target::rtt_init_defmt!();
 
-    let config = esp_hal::Config::default().with_cpu_clock(CpuClock::max());
-    let peripherals = esp_hal::init(config);
+    // Initialize the HAL Peripherals
+    let p = esp_hal::init(esp_hal::Config::default());
 
     info!("Initializing WS2812 LED on GPIO2...");
 
-    // Configure RMT (Remote Control Transceiver) peripheral for WS2812
-    let rmt = Rmt::new(peripherals.RMT, Rate::from_mhz(80)).expect("Failed to initialize RMT");
+    // Configure RMT (Remote Control Transceiver) peripheral
+    // The RMT peripheral is used to generate the precise timing required for WS2812 LEDs
+    let rmt = Rmt::new(p.RMT, Rate::from_mhz(80)).expect("Failed to initialize RMT");
 
     // Use RMT channel 0 for the LED control
     let rmt_channel = rmt.channel0;
 
-    // Create a buffer for one LED
+    // Create a buffer for one LED (adjust the number if you have more LEDs)
     let mut rmt_buffer = smart_led_buffer!(1);
 
     // Create SmartLED adapter using GPIO2
-    let mut led = SmartLedsAdapter::new(rmt_channel, peripherals.GPIO2, &mut rmt_buffer);
+    let mut led = SmartLedsAdapter::new(rmt_channel, p.GPIO2, &mut rmt_buffer);
 
     let delay = Delay::new();
 
@@ -52,7 +52,7 @@ fn main() -> ! {
     // Brightness level (0-255, setting to 10 to avoid too bright output)
     let brightness_level = 10;
 
-    info!("Starting rainbow animation on WS2812 LED...");
+    info!("Starting rainbow animation...");
 
     loop {
         // Iterate through all hues to create rainbow effect
@@ -62,7 +62,7 @@ fn main() -> ! {
             // Convert from HSV to RGB color space
             let data: RGB8 = hsv2rgb(color);
 
-            // Apply gamma correction and brightness limiting, then write to LED
+            // Apply gamma correction and brightness limiting
             led.write(brightness(gamma([data].into_iter()), brightness_level))
                 .unwrap();
 

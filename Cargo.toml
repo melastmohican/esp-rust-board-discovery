@@ -17,6 +17,8 @@ embedded-hal-bus = { version = "0.2.0", features = ["defmt-03"] }
 shtcx = "1.0.0"
 icm42670 = "0.2.0"
 critical-section = "1.2.0"
+esp-hal-smartled = { git = "https://github.com/esp-rs/esp-hal-community", features = ["esp32c3"] }
+smart-leds = "0.4.0"
 
 [profile.dev]
 # Rust debug is too slow.
