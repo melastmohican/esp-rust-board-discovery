@@ -2,12 +2,12 @@
 #![no_main]
 
 use defmt::info;
+use esp_hal::gpio::{Input, InputConfig, Level, Output, OutputConfig};
 use esp_hal::{
     delay::Delay,
     i2c::master::{Config as I2cConfig, I2c},
     main,
 };
-use esp_hal::gpio::{Input, InputConfig, Level, Output, OutputConfig};
 use panic_rtt_target as _;
 
 esp_bootloader_esp_idf::esp_app_desc!();

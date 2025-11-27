@@ -1,7 +1,6 @@
 #![no_std]
 #![no_main]
 
-
 use defmt::info;
 use esp_hal::{
     delay::Delay,
@@ -9,12 +8,9 @@ use esp_hal::{
     handler, main,
 };
 
-use panic_rtt_target as _;
 use core::cell::RefCell;
 use critical_section::Mutex;
-
-
-
+use panic_rtt_target as _;
 
 esp_bootloader_esp_idf::esp_app_desc!();
 
