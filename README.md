@@ -200,6 +200,8 @@ cargo run --example ssd1306_text
 
 These examples require a Waveshare 0.96 inch LCD module (80x160 pixels) with ST7735S controller connected via SPI.
 
+**Note:** For round 240x240 displays, see the GC9A01 examples below.
+
 #### Wiring for Waveshare 0.96" LCD Module
 
 ```
@@ -258,6 +260,79 @@ cargo run --example st7735s_spi_text
 - Multiple colors: white, blue, yellow, green, red, orange
 - Shows "Rust ESP Board" title with graphics
 
+### Display Examples (GC9A01 Round LCD - SPI)
+
+These examples require a GC9A01 round LCD module (240x240 pixels) connected via SPI. This is a circular display commonly used in smartwatches and circular gauge displays.
+
+**Hardware:** UNI128-240240-RGB-7-V1.0 Display Module (7 pins)
+
+**Important Note:** Despite the module having pins labeled **SCL/SDA**, this is an **SPI display**, not I2C! The presence of DC (Data/Command) and CS (Chip Select) pins confirms it's SPI. The pin labels mean:
+- **SCL** = SPI Clock (same as SCK/SCLK)
+- **SDA** = SPI Data (same as MOSI - Master Out Slave In)
+
+#### Wiring for UNI128-240240-RGB-7-V1.0 Module
+
+```
+LCD Pin -> ESP32-C3-DevKit-RUST-1
+-------    ----------------------
+VCC     -> 3.3V
+GND     -> GND
+SCL     -> GPIO6  (SPI Clock)
+SDA     -> GPIO7  (SPI MOSI/Data)
+DC      -> GPIO4  (Data/Command)
+CS      -> GPIO5  (Chip Select)
+RST     -> GPIO3  (Reset)
+```
+
+**Pin Functions:**
+- **VCC**: Power supply (3.3V)
+- **GND**: Ground
+- **SCL**: SPI clock (labeled SCL but it's actually SPI SCK)
+- **SDA**: SPI data output (labeled SDA but it's actually SPI MOSI)
+- **DC**: Data/Command select (Low=Command, High=Data)
+- **CS**: Chip select (active low) - enables the display
+- **RST**: Reset (active low) - resets the display controller
+
+**Note:** This 7-pin module has no separate backlight control pin - the backlight is always on when powered.
+
+**SPI Configuration:**
+- SPI Mode: 0 (CPOL=0, CPHA=0)
+- Clock Speed: 60 MHz (GC9A01 supports up to 62.5 MHz)
+- Display Resolution: 240x240 pixels (round/circular)
+- Color Format: RGB565 (16-bit color, 65,536 colors)
+- Display Shape: Circular (visible area is round)
+
+#### gc9a01_spi
+Displays Ferris and Rust logo images on the round color LCD.
+
+```bash
+cargo run --example gc9a01_spi
+```
+
+**Features:**
+- Full RGB565 color support (16-bit, 65K colors)
+- 240x240 pixel round display
+- Displays raw RGB565 image format (Ferris)
+- Displays BMP image format (Rust logo)
+- High-speed 60 MHz SPI for fast rendering
+- Uses mipidsi driver for robust display control
+
+#### gc9a01_spi_text
+Demonstrates text rendering and colorful shapes optimized for the circular display.
+
+```bash
+cargo run --example gc9a01_spi_text
+```
+
+**Features:**
+- Multiple font sizes (6x10, 9x15 bold, 10x20)
+- Text styling with colors and backgrounds
+- Circular shapes to match the round display form factor
+- Drawing primitives optimized for circular layout
+- Multiple colors: white, blue, yellow, green, red, cyan, magenta, orange
+- Shows "GC9A01 Display" title with circular graphics
+- Demonstrates lines radiating from center
+
 ## Dependencies
 
 Key dependencies used in this project:
@@ -268,6 +343,8 @@ Key dependencies used in this project:
 - **smart-leds** - Color manipulation and LED traits
 - **ssd1306** - OLED display driver (I2C)
 - **st7735-lcd** - ST7735S color LCD driver (SPI)
+- **mipidsi** - Universal MIPI display driver (supports GC9A01 and many others)
+- **display-interface-spi** - SPI display interface for mipidsi
 - **embedded-graphics** - 2D graphics library for displays
 - **tinybmp** - BMP image format support
 - **shtcx** - SHTC3 sensor driver

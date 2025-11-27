@@ -637,6 +637,7 @@ dependencies = [
  "bme280",
  "critical-section",
  "defmt 1.0.1",
+ "display-interface-spi",
  "embedded-graphics",
  "embedded-hal 1.0.0",
  "embedded-hal-bus",
@@ -644,6 +645,7 @@ dependencies = [
  "esp-hal",
  "esp-hal-smartled",
  "icm42670",
+ "mipidsi",
  "panic-rtt-target",
  "rtt-target",
  "shtcx",
@@ -995,6 +997,19 @@ name = "micromath"
 version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c3c8dda44ff03a2f238717214da50f65d5a53b45cd213a7370424ffdb6fae815"
+
+[[package]]
+name = "mipidsi"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "44e2bbd372d8ae9ccd0fc6eb4d91742b971ed8149968bbc623f025506989bd30"
+dependencies = [
+ "display-interface",
+ "embedded-graphics-core",
+ "embedded-hal 1.0.0",
+ "heapless",
+ "nb 1.1.0",
+]
 
 [[package]]
 name = "nb"
