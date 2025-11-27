@@ -157,7 +157,7 @@ SDA (blue)   -> GPIO10
 
 **Output:** Temperature in °C and humidity in %
 
-### Display Examples (SSD1306 OLED)
+### Display Examples (SSD1306 OLED - I2C)
 
 These examples require an external 128x64 SSD1306 OLED display connected via I2C.
 
@@ -196,6 +196,68 @@ cargo run --example ssd1306_text
 - Drawing primitives (lines, rectangles, circles)
 - Shows "Rust ESP Board Demo" with graphics
 
+### Display Examples (ST7735S LCD - SPI)
+
+These examples require a Waveshare 0.96 inch LCD module (80x160 pixels) with ST7735S controller connected via SPI.
+
+#### Wiring for Waveshare 0.96" LCD Module
+
+```
+LCD Pin -> ESP32-C3-DevKit-RUST-1
+-------    ----------------------
+VCC     -> 3.3V
+GND     -> GND
+DIN     -> GPIO7  (MOSI)
+CLK     -> GPIO6  (SCK)
+CS      -> GPIO5  (Chip Select)
+DC      -> GPIO4  (Data/Command)
+RST     -> GPIO3  (Reset)
+BL      -> GPIO2  (Backlight)
+```
+
+**Pin Functions:**
+- **VCC**: Power supply (3.3V)
+- **GND**: Ground
+- **DIN (MOSI)**: SPI data input - transmits pixel data
+- **CLK (SCK)**: SPI clock - synchronizes data transmission
+- **CS**: Chip select (active low) - enables the display
+- **DC**: Data/Command select (Low=Command, High=Data)
+- **RST**: Reset (active low) - resets the display controller
+- **BL**: Backlight control (HIGH=on, LOW=off)
+
+**SPI Configuration:**
+- SPI Mode: 0 (CPOL=0, CPHA=0)
+- Clock Speed: 26 MHz
+- Display Resolution: 80x160 pixels (landscape mode)
+- Color Format: RGB565 (16-bit color, 65,536 colors)
+
+#### st7735s_spi
+Displays Ferris and Rust logo images on the color LCD.
+
+```bash
+cargo run --example st7735s_spi
+```
+
+**Features:**
+- Full RGB565 color support (16-bit, 65K colors)
+- Displays raw RGB565 image format (Ferris)
+- Displays BMP image format (Rust logo)
+- Hardware SPI for fast rendering
+
+#### st7735s_spi_text
+Demonstrates text rendering and colorful shapes on the LCD display.
+
+```bash
+cargo run --example st7735s_spi_text
+```
+
+**Features:**
+- Multiple font sizes (6x10, 9x15 bold)
+- Text styling with colors and backgrounds
+- Drawing colorful primitives (rectangles, circles, lines)
+- Multiple colors: white, blue, yellow, green, red, orange
+- Shows "Rust ESP Board" title with graphics
+
 ## Dependencies
 
 Key dependencies used in this project:
@@ -204,8 +266,10 @@ Key dependencies used in this project:
 - **embedded-hal** - Standard embedded traits
 - **esp-hal-smartled** - WS2812/smart LED support via RMT
 - **smart-leds** - Color manipulation and LED traits
-- **ssd1306** - OLED display driver
-- **embedded-graphics** - 2D graphics library
+- **ssd1306** - OLED display driver (I2C)
+- **st7735-lcd** - ST7735S color LCD driver (SPI)
+- **embedded-graphics** - 2D graphics library for displays
+- **tinybmp** - BMP image format support
 - **shtcx** - SHTC3 sensor driver
 - **icm42670** - ICM42670 IMU driver
 - **bme280** - BME280 environmental sensor driver
