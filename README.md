@@ -260,6 +260,102 @@ cargo run --example st7735s_spi_text
 - Multiple colors: white, blue, yellow, green, red, orange
 - Shows "Rust ESP Board" title with graphics
 
+### Display Examples (ILI9341 TFT LCD - SPI)
+
+These examples require an ILI9341 TFT LCD module (240x320 pixels) connected via SPI. This is a common rectangular display used in many projects.
+
+**Hardware:** 2.8" TFT SPI 240x320 V1.2 Display Module
+
+This module includes a resistive touchscreen (T_CLK, T_CS, T_DIN, T_DO, T_IRQ pins) which is not used in these basic display examples.
+
+#### Wiring for 2.8" TFT SPI 240x320 V1.2 Module
+
+```
+LCD Pin     -> ESP32-C3-DevKit-RUST-1
+----------     ----------------------
+VCC         -> 3.3V
+GND         -> GND
+CS          -> GPIO5  (Chip Select)
+RESET       -> GPIO3  (Reset)
+DC          -> GPIO4  (Data/Command)
+SDI (MOSI)  -> GPIO7  (SPI MOSI/Data)
+SCK         -> GPIO6  (SPI Clock)
+LED         -> 3.3V  (Backlight)
+SDO (MISO)  -> GPIO1  (optional)
+
+Touchscreen pins (not connected in these examples):
+T_CLK       -> (not used)
+T_CS        -> (not used)
+T_DIN       -> (not used)
+T_DO        -> (not used)
+T_IRQ       -> (not used)
+```
+
+**Pin Functions:**
+- **VCC**: Power supply (3.3V or 5V depending on module)
+- **GND**: Ground
+- **CS**: Chip select for LCD (active low)
+- **RESET**: Reset (active low)
+- **DC**: Data/Command select (Low=Command, High=Data)
+- **SDI (MOSI)**: SPI data input to display
+- **SCK**: SPI clock
+- **LED**: Backlight power (can connect to GPIO for PWM control)
+- **SDO (MISO)**: SPI data output (optional, rarely needed)
+
+**SPI Configuration:**
+- SPI Mode: 0 (CPOL=0, CPHA=0)
+- Clock Speed: 40 MHz (ILI9341 supports up to 60 MHz)
+- Display Resolution: 240x320 pixels (portrait mode)
+- Color Format: RGB565 (16-bit color, 65,536 colors)
+
+#### ili9341_spi
+Displays colorful text and Rust logo on the TFT LCD.
+
+```bash
+cargo run --example ili9341_spi
+```
+
+**Features:**
+- Full RGB565 color support (16-bit, 65K colors)
+- 240x320 pixel rectangular display
+- Multiple colored text examples
+- Displays BMP image format (Rust logo)
+- High-speed 40 MHz SPI for fast rendering
+
+#### ili9341_spi_text
+Demonstrates comprehensive text rendering and colorful shapes on the LCD.
+
+```bash
+cargo run --example ili9341_spi_text
+```
+
+**Features:**
+- Multiple font sizes (6x10, 9x15 bold, 10x20)
+- Text styling with colors and backgrounds
+- Drawing primitives (rectangles, circles, lines)
+- Multiple colors: red, green, blue, yellow, cyan, magenta, white
+- Title bar with background color
+- Demonstrates rectangular layout for portrait display
+
+#### zermatt
+Displays a full-screen 320x240 landscape image of Zermatt on the ILI9341 display.
+
+```bash
+cargo run --example zermatt
+```
+
+**Features:**
+- Full-screen landscape image display (320×240)
+- Uses BMP format with tinybmp library
+- Demonstrates landscape orientation (90° rotation)
+- BGR color order for correct colors
+- Includes Python script for JPEG to BMP conversion
+
+**Image Conversion:**
+```bash
+python3 examples/convert_jpg_to_bmp.py examples/zermatt_320x240.jpg examples/zermatt_320x240.bmp
+```
+
 ### Display Examples (GC9A01 Round LCD - SPI)
 
 These examples require a GC9A01 round LCD module (240x240 pixels) connected via SPI. This is a circular display commonly used in smartwatches and circular gauge displays.
@@ -367,11 +463,13 @@ cargo run --example <example_name>
 ## Development Setup
 
 1. Install Rust and cargo
-2. Install espflash: `cargo install espflash`
+2. Install probe-rs: `cargo install probe-rs-tools --locked`
 3. Add RISC-V target: `rustup target add riscv32imc-unknown-none-elf`
 4. Clone this repository
 5. Connect your Rust ESP Board via USB
 6. Run examples with `cargo run --example <name>`
+
+**Note:** This project uses probe-rs for flashing and debugging. The `.cargo/config.toml` is configured to use probe-rs as the runner.
 
 ## Resources
 
