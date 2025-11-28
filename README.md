@@ -157,6 +157,92 @@ SDA (blue)   -> GPIO10
 
 **Output:** Temperature in °C and humidity in %
 
+#### bh1750_i2c
+Reads ambient light levels in lux from a BH1750 digital light sensor. This example is configured for the **Adafruit BH1750** breakout board connected via **Qwiic/STEMMA QT** cable.
+
+```bash
+cargo run --example bh1750_i2c
+```
+
+**Hardware:**
+- Sensor: Adafruit BH1750 Light Sensor
+- Connection: Qwiic/STEMMA QT cable (plug and play I2C connection)
+
+**Wiring with Qwiic/STEMMA QT:**
+
+Simply connect the Qwiic/STEMMA QT cable between the board and sensor - no separate wires needed!
+
+```
+BH1750 Pin  -> Rust ESP Board
+----------     --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO8
+SDA (blue)  -> GPIO10
+```
+
+**I2C Address:**
+- Adafruit BH1750: `0x23` (ADDR pin to GND, default)
+- Alternative: `0x5C` (ADDR pin to VCC)
+
+**Features:**
+- Wide range and high resolution (1-65535 lx)
+- Spectral response close to human eye
+- Three resolution modes: Low (4 lx), High (1 lx), High2 (0.5 lx)
+- Automatic mode cycling demonstration
+- Low power consumption
+
+**Output:** Light level in lux, cycling through different resolution modes
+
+#### modulino_pixels_i2c
+Controls 8 RGB LEDs on the Arduino Modulino Pixels module. This example is configured for the **Arduino Modulino Pixels** connected via **Qwiic/STEMMA QT** cable.
+
+```bash
+cargo run --example modulino_pixels_i2c
+```
+
+**Hardware:**
+- Module: Arduino Modulino Pixels (ABX00109)
+- LEDs: 8x LC8822-2020 addressable RGB LEDs
+- MCU: STM32C011F4 (handles LED control over I2C)
+- Connection: Qwiic/STEMMA QT cable (plug and play I2C connection)
+
+**Wiring with Qwiic/STEMMA QT:**
+
+Simply connect the Qwiic/STEMMA QT cable between the board and Modulino Pixels - no separate wires needed!
+
+```
+Modulino Pin -> Rust ESP Board
+------------    --------------
+GND (black)  -> GND
+VCC (red)    -> 3.3V
+SCL (yellow) -> GPIO8
+SDA (blue)   -> GPIO10
+```
+
+**I2C Address:**
+- Modulino Pixels: `0x36` (7-bit addressing)
+- Note: Some documentation shows `0x6C` (8-bit write address = 0x36 << 1)
+- Address is configurable via software for multiple modules
+
+**Protocol:**
+- Each LED: 4 bytes [red, green, blue, 0xE0|brightness]
+- RGB values: 0-255 each
+- Brightness: 0-100 (mapped to 0-31 internally)
+- Control bits: 0xE0 always set
+- Total buffer: 32 bytes for 8 LEDs
+
+**Features:**
+- Individual control of 8 RGB LEDs
+- Adjustable brightness per LED
+- Full RGB color support
+- Three demo animations:
+  - Rainbow colors - All 8 LEDs in different colors
+  - Knight Rider effect - Scanning LED with trailing glow
+  - Color fade cycle - Smooth fading through colors
+
+**Output:** Displays colorful LED animations
+
 ### Display Examples (SSD1306 OLED - I2C)
 
 These examples require an external 128x64 SSD1306 OLED display connected via I2C.
@@ -446,6 +532,7 @@ Key dependencies used in this project:
 - **shtcx** - SHTC3 sensor driver
 - **icm42670** - ICM42670 IMU driver
 - **bme280** - BME280 environmental sensor driver
+- **bh1750** - BH1750 light sensor driver
 - **defmt** - Efficient logging framework
 
 ## Building and Flashing

@@ -26,6 +26,7 @@ st7735-lcd = "0.10.0"
 tinybmp = "0.6.0"
 mipidsi = "0.8.0"
 display-interface-spi = "0.5.0"
+bh1750 = "0.1.0"
 
 [profile.dev]
 # Rust debug is too slow.
