@@ -12,6 +12,7 @@ panic-rtt-target = { version = "0.2.0", features = ["defmt"] }
 rtt-target = { version = "0.6.2", features = ["defmt"] }
 defmt = "1.0.1"
 embedded-hal-bus = { version = "0.2.0", features = ["defmt-03"] }
+esp-alloc = "0.9.0"
 
 [dev-dependencies]
 shtcx = "1.0.0"
@@ -27,6 +28,20 @@ tinybmp = "0.6.0"
 mipidsi = "0.8.0"
 display-interface-spi = "0.5.0"
 bh1750 = "0.1.0"
+blocking-network-stack = { git = "https://github.com/bjoernQ/blocking-network-stack.git", rev = "b3ecefc222d8806edd221f266999ca339c52d34e" }
+esp-bootloader-esp-idf = { version = "0.4.0", features = ["esp32c3"] }
+esp-rtos = { version = "0.2.0", features = ["esp32c3", "esp-radio"] }
+esp-radio = { version = "0.17.0", features = [
+    "esp32c3",
+    "wifi",
+    "smoltcp",
+    "unstable",
+] }
+smoltcp = { version = "0.12.0", default-features = false, features = [
+    "medium-ethernet",
+    "socket-raw",
+] }
+embedded-io = { version = "0.6.1", default-features = false }
 
 [profile.dev]
 # Rust debug is too slow.
