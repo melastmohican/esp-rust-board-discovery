@@ -44,13 +44,13 @@ Demonstrates interrupt-driven button handling for more efficient code.
 cargo run --example button-interrupt
 ```
 
-### WS2812 RGB LED
+### WS2812 RGB LED2
 
-#### ws2812
+#### rgBlinky
 Controls the on-board WS2812 addressable RGB LED on GPIO2. Displays a smooth rainbow animation cycling through all colors using HSV color space with gamma correction.
 
 ```bash
-cargo run --example ws2812
+cargo run --example rgBlinky
 ```
 
 **Features:**
