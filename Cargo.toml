@@ -13,6 +13,7 @@ rtt-target = { version = "0.6.2", features = ["defmt"] }
 defmt = "1.0.1"
 embedded-hal-bus = { version = "0.2.0", features = ["defmt-03"] }
 esp-alloc = "0.9.0"
+nb = "1.0.1"
 
 [dev-dependencies]
 shtcx = "1.0.0"
@@ -42,6 +43,7 @@ smoltcp = { version = "0.12.0", default-features = false, features = [
     "socket-raw",
 ] }
 embedded-io = { version = "0.6.1", default-features = false }
+pmsx003 = "1.0.0"
 
 [profile.dev]
 # Rust debug is too slow.
