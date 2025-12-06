@@ -19,7 +19,9 @@ nb = "1.0.1"
 shtcx = "1.0.0"
 icm42670 = "0.2.0"
 critical-section = "1.2.0"
-esp-hal-smartled = { git = "https://github.com/esp-rs/esp-hal-community", features = ["esp32c3"] }
+esp-hal-smartled = { git = "https://github.com/esp-rs/esp-hal-community", features = [
+    "esp32c3",
+] }
 smart-leds = "0.4.0"
 ssd1306 = "0.9.0"
 embedded-graphics = "0.8.1"
@@ -51,7 +53,7 @@ pmsx003 = "1.0.0"
 opt-level = "s"
 
 [profile.release]
-codegen-units = 1     # LLVM can perform better optimizations using a single thread
+codegen-units = 1        # LLVM can perform better optimizations using a single thread
 debug = 2
 debug-assertions = false
 incremental = false

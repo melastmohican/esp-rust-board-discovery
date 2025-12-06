@@ -237,6 +237,36 @@ SDA (blue)  -> GPIO10
 
 **Output:** Light level in lux, cycling through different resolution modes
 
+#### ltr559_i2c
+
+Reads ambient light (lux) and proximity data from an LTR559 sensor. This example is configured for the **Pimoroni Enviro+ FeatherWing**.
+
+```bash
+cargo run --example ltr559_i2c
+```
+
+**Hardware:**
+
+- Sensor: LITE-ON LTR559 (on Pimoroni Enviro+ FeatherWing)
+- Connection: I2C (configured for ESP32-C3)
+- I2C Address: `0x23` (default)
+
+**Wiring:**
+
+- **SDA:** GPIO 10
+- **SCL:** GPIO 8
+- **VCC:** 3.3V
+- **GND:** GND
+
+**Features:**
+
+- Reads Proximity and Light (Lux) data
+- Custom driver implementation (no external crate needed)
+- Lux calculation using Pimoroni's formula
+- Verified gain settings against reference drivers
+
+**Output:** Proximity value and Light level in Lux
+
 #### modulino_pixels_i2c
 
 Controls 8 RGB LEDs on the Arduino Modulino Pixels module. This example is configured for the **Arduino Modulino Pixels** connected via **Qwiic/STEMMA QT** cable.
@@ -412,6 +442,53 @@ cargo run --example ssd1306_text
 - Text rendering with built-in fonts
 - Drawing primitives (lines, rectangles, circles)
 - Shows "Rust ESP Board Demo" with graphics
+
+### Display Examples (SH1107 OLED - I2C)
+
+These examples require an Adafruit 128x64 OLED FeatherWing (SH1107) connected via I2C.
+
+**Hardware:** [Adafruit 128x64 OLED FeatherWing](https://www.adafruit.com/product/4650)
+
+#### Wiring for Adafruit OLED FeatherWing
+
+```
+Display Pin -> Rust ESP Board
+-----------    --------------
+GND         -> GND
+3V          -> 3.3V
+SCL         -> GPIO8
+SDA         -> GPIO10
+```
+
+#### adafruit_feather_sh1107_text
+
+Demonstrates text rendering and drawing shapes on the SH1107 OLED using a local driver implementation.
+
+```bash
+cargo run --example adafruit_feather_sh1107_text
+```
+
+**Features:**
+
+- Custom local driver (no external crate dependency issues)
+- 128x64 pixel resolution
+- Text and shape rendering using `embedded-graphics`
+- Safe for USB debugging (uses I2C, not SPI)
+
+#### adafruit_feather_sh1107
+
+Displays two 64x64 bitmap images side-by-side using the local driver.
+
+```bash
+cargo run --example adafruit_feather_sh1107
+```
+
+**Features:**
+
+- Displays `ferris64x64bw.bmp` (converted from RGB to 1-bit BMP)
+- Displays `rust.raw` (raw 1-bit image data)
+- Demonstrates loading images with `tinybmp` and `ImageRaw`
+- Includes `convert_ferris.py` script for converting images
 
 ### Display Examples (ST7735S LCD - SPI)
 
