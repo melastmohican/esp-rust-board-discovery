@@ -9,6 +9,7 @@ This project contains examples and tutorials for programming the Rust ESP Board 
 ## Hardware
 
 **Board:** ESP32-C3-DevKit-RUST-1 (Rust ESP Board)
+
 - **MCU:** ESP32-C3 (RISC-V single-core processor)
 - **On-board peripherals:**
   - WS2812 RGB LED on GPIO2
@@ -24,6 +25,7 @@ This project contains examples and tutorials for programming the Rust ESP Board 
 ### Basic Examples
 
 #### blinky
+
 Blinks the on-board LED to verify your setup is working.
 
 ```bash
@@ -31,6 +33,7 @@ cargo run --example blinky
 ```
 
 #### button
+
 Reads the user button state and prints to console.
 
 ```bash
@@ -38,6 +41,7 @@ cargo run --example button
 ```
 
 #### button-interrupt
+
 Demonstrates interrupt-driven button handling for more efficient code.
 
 ```bash
@@ -47,6 +51,7 @@ cargo run --example button-interrupt
 ### WS2812 RGB LED2
 
 #### rgBlinky
+
 Controls the on-board WS2812 addressable RGB LED on GPIO2. Displays a smooth rainbow animation cycling through all colors using HSV color space with gamma correction.
 
 ```bash
@@ -54,6 +59,7 @@ cargo run --example rgBlinky
 ```
 
 **Features:**
+
 - Uses ESP32 RMT peripheral for precise timing
 - HSV to RGB color conversion
 - Gamma correction for better color appearance
@@ -62,6 +68,7 @@ cargo run --example rgBlinky
 ### I2C Examples
 
 #### i2c_scan
+
 Scans the I2C bus for connected devices and prints their addresses. Useful for debugging I2C connections.
 
 ```bash
@@ -69,10 +76,12 @@ cargo run --example i2c_scan
 ```
 
 **Expected devices on the Rust ESP Board:**
+
 - `0x44` - SHTC3 temperature/humidity sensor
 - `0x68` - ICM42670p IMU
 
 #### shtc3
+
 Reads temperature and humidity from the on-board SHTC3 sensor and prints values continuously.
 
 ```bash
@@ -82,6 +91,7 @@ cargo run --example shtc3
 **Output:** Temperature in °C and humidity in %
 
 #### icm42670p
+
 Demonstrates reading both the SHTC3 sensor and the ICM42670p gyroscope simultaneously using shared I2C bus.
 
 ```bash
@@ -91,6 +101,7 @@ cargo run --example icm42670p
 **Output:** Temperature, humidity, and gyroscope X/Y/Z values
 
 #### bme280_i2c
+
 Reads temperature, humidity, and atmospheric pressure from an external BME280 sensor. This is a popular environmental sensor that measures all three parameters in one device.
 
 This example is configured for the **Adafruit BME280** breakout board connected via **Qwiic/STEMMA QT** cable.
@@ -100,6 +111,7 @@ cargo run --example bme280_i2c
 ```
 
 **Hardware:**
+
 - Sensor: Adafruit BME280 Temperature Humidity Pressure Sensor
 - Connection: Qwiic/STEMMA QT cable (plug and play I2C connection)
 
@@ -116,13 +128,37 @@ SCL (yellow)-> GPIO8
 SDA (blue)  -> GPIO10
 ```
 
+```mermaid
+graph LR
+    subgraph ESP32 ["Rust ESP Board"]
+        VCC_M["3.3V"]
+        GND_M["GND"]
+        GPIO8["GPIO8 (SCL)"]
+        GPIO10["GPIO10 (SDA)"]
+    end
+
+    subgraph BME280 ["BME280 Sensor"]
+        VCC_S["VCC"]
+        GND_S["GND"]
+        SCL_S["SCL"]
+        SDA_S["SDA"]
+    end
+
+    VCC_M -- Red --> VCC_S
+    GND_M -- Black --> GND_S
+    GPIO8 -- Yellow --> SCL_S
+    GPIO10 -- Blue --> SDA_S
+```
+
 **I2C Address:**
+
 - Adafruit BME280: `0x77` (configured in code)
 - Generic modules: Often `0x76` (change to `BME280::new_primary()` in code)
 
 **Output:** Temperature in °C, humidity in %, and atmospheric pressure in hPa
 
 #### hs3003_i2c
+
 Reads temperature and humidity from the Renesas HS3003 sensor using a custom driver implementation. This example is configured for the **Arduino Modulino Thermo** connected via **Qwiic/STEMMA QT** cable.
 
 ```bash
@@ -130,6 +166,7 @@ cargo run --example hs3003_i2c
 ```
 
 **Hardware:**
+
 - Sensor: Arduino Modulino Thermo (Renesas HS3003)
 - Connection: Qwiic/STEMMA QT cable (plug and play I2C connection)
 
@@ -147,9 +184,11 @@ SDA (blue)   -> GPIO10
 ```
 
 **I2C Address:**
+
 - HS3003: `0x44` (fixed address)
 
 **Features:**
+
 - 14-bit resolution for temperature and humidity
 - Temperature: -40°C to +125°C (±0.2°C accuracy)
 - Humidity: 0-100% RH (±1.5% accuracy)
@@ -158,6 +197,7 @@ SDA (blue)   -> GPIO10
 **Output:** Temperature in °C and humidity in %
 
 #### bh1750_i2c
+
 Reads ambient light levels in lux from a BH1750 digital light sensor. This example is configured for the **Adafruit BH1750** breakout board connected via **Qwiic/STEMMA QT** cable.
 
 ```bash
@@ -165,6 +205,7 @@ cargo run --example bh1750_i2c
 ```
 
 **Hardware:**
+
 - Sensor: Adafruit BH1750 Light Sensor
 - Connection: Qwiic/STEMMA QT cable (plug and play I2C connection)
 
@@ -182,10 +223,12 @@ SDA (blue)  -> GPIO10
 ```
 
 **I2C Address:**
+
 - Adafruit BH1750: `0x23` (ADDR pin to GND, default)
 - Alternative: `0x5C` (ADDR pin to VCC)
 
 **Features:**
+
 - Wide range and high resolution (1-65535 lx)
 - Spectral response close to human eye
 - Three resolution modes: Low (4 lx), High (1 lx), High2 (0.5 lx)
@@ -195,6 +238,7 @@ SDA (blue)  -> GPIO10
 **Output:** Light level in lux, cycling through different resolution modes
 
 #### modulino_pixels_i2c
+
 Controls 8 RGB LEDs on the Arduino Modulino Pixels module. This example is configured for the **Arduino Modulino Pixels** connected via **Qwiic/STEMMA QT** cable.
 
 ```bash
@@ -202,6 +246,7 @@ cargo run --example modulino_pixels_i2c
 ```
 
 **Hardware:**
+
 - Module: Arduino Modulino Pixels (ABX00109)
 - LEDs: 8x LC8822-2020 addressable RGB LEDs
 - MCU: STM32C011F4 (handles LED control over I2C)
@@ -221,11 +266,13 @@ SDA (blue)   -> GPIO10
 ```
 
 **I2C Address:**
+
 - Modulino Pixels: `0x36` (7-bit addressing)
 - Note: Some documentation shows `0x6C` (8-bit write address = 0x36 << 1)
 - Address is configurable via software for multiple modules
 
 **Protocol:**
+
 - Each LED: 4 bytes [red, green, blue, 0xE0|brightness]
 - RGB values: 0-255 each
 - Brightness: 0-100 (mapped to 0-31 internally)
@@ -233,6 +280,7 @@ SDA (blue)   -> GPIO10
 - Total buffer: 32 bytes for 8 LEDs
 
 **Features:**
+
 - Individual control of 8 RGB LEDs
 - Adjustable brightness per LED
 - Full RGB color support
@@ -242,6 +290,85 @@ SDA (blue)   -> GPIO10
   - Color fade cycle - Smooth fading through colors
 
 **Output:** Displays colorful LED animations
+
+#### bme280alt_i2c
+
+Reads temperature, humidity, and atmospheric pressure from a BME280 sensor at address `0x76`. This example is configured for the **Pimoroni Enviro+ FeatherWing** or other modules using the alternative I2C address.
+
+```bash
+cargo run --example bme280alt_i2c
+```
+
+**Hardware:**
+
+- Sensor: Pimoroni Enviro+ FeatherWing (BME280)
+- I2C Address: `0x76` (SDO to GND)
+
+### Analog Examples
+
+#### mics6814
+
+Reads values from the MICS6814 analog gas sensor (Oxidising, Reducing, and NH3 channels). Configured for the **Pimoroni Enviro+ FeatherWing**.
+
+```bash
+cargo run --example mics6814
+```
+
+**Hardware:**
+
+- Sensor: MICS6814 (on Pimoroni Enviro+ FeatherWing)
+- Connection: Analog inputs (configured for ESP32-C3 ADC)
+
+### UART Examples
+
+#### pms5003
+
+Reads PM1.0, PM2.5, and PM10 air quality data from a PMS5003 sensor connected via UART.
+
+```bash
+cargo run --example pms5003
+```
+
+**Wiring:**
+
+- Sensor TX -> GPIO21 (RX)
+- Sensor RX -> GPIO20 (TX)
+
+```mermaid
+graph LR
+    subgraph ESP32 ["Rust ESP Board"]
+        VCC_M["5V/VUSB"]
+        GND_M["GND"]
+        GPIO20["GPIO20 (TX)"]
+        GPIO21["GPIO21 (RX)"]
+    end
+
+    subgraph PMS ["PMS5003 Sensor"]
+        VCC_S["VCC"]
+        GND_S["GND"]
+        RX_S["RXD"]
+        TX_S["TXD"]
+    end
+
+    VCC_M -- Red --> VCC_S
+    GND_M -- Black --> GND_S
+    GPIO20 -- "MCU TX to Sensor RX" --> RX_S
+    GPIO21 -- "MCU RX from Sensor TX" --> TX_S
+```
+
+### Wi-Fi Examples
+
+#### http_client
+
+Connects to a Wi-Fi network and performs a simple HTTP GET request.
+
+```bash
+cargo run --example http_client
+```
+
+**Configuration:**
+
+- Requires `SSID` and `PASSWORD` environment variables to be set at compile time.
 
 ### Display Examples (SSD1306 OLED - I2C)
 
@@ -259,6 +386,7 @@ SDA (green) -> GPIO10
 ```
 
 #### ssd1306
+
 Displays a Rust logo image on the OLED screen.
 
 ```bash
@@ -266,11 +394,13 @@ cargo run --example ssd1306
 ```
 
 **Features:**
+
 - 1-bit black and white graphics
 - Buffered rendering
 - Static image display
 
 #### ssd1306_text
+
 Demonstrates text rendering and drawing shapes on the OLED display.
 
 ```bash
@@ -278,6 +408,7 @@ cargo run --example ssd1306_text
 ```
 
 **Features:**
+
 - Text rendering with built-in fonts
 - Drawing primitives (lines, rectangles, circles)
 - Shows "Rust ESP Board Demo" with graphics
@@ -291,7 +422,7 @@ These examples require a Waveshare 0.96 inch LCD module (80x160 pixels) with ST7
 #### Wiring for Waveshare 0.96" LCD Module
 
 ```
-LCD Pin -> ESP32-C3-DevKit-RUST-1
+LCD Pin -> Rust ESP Board
 -------    ----------------------
 VCC     -> 3.3V
 GND     -> GND
@@ -303,7 +434,42 @@ RST     -> GPIO3  (Reset)
 BL      -> GPIO2  (Backlight)
 ```
 
+```mermaid
+graph LR
+    subgraph ESP32 ["Rust ESP Board"]
+        VCC_M["3.3V"]
+        GND_M["GND"]
+        GPIO7["GPIO7 (MOSI)"]
+        GPIO6["GPIO6 (SCK)"]
+        GPIO5["GPIO5 (CS)"]
+        GPIO4["GPIO4 (DC)"]
+        GPIO3["GPIO3 (RST)"]
+        GPIO2["GPIO2 (BL)"]
+    end
+
+    subgraph LCD ["ST7735S LCD"]
+        VCC_S["VCC"]
+        GND_S["GND"]
+        DIN_S["DIN"]
+        CLK_S["CLK"]
+        CS_S["CS"]
+        DC_S["DC"]
+        RST_S["RST"]
+        BL_S["BL"]
+    end
+
+    VCC_M --> VCC_S
+    GND_M --> GND_S
+    GPIO7 --> DIN_S
+    GPIO6 --> CLK_S
+    GPIO5 --> CS_S
+    GPIO4 --> DC_S
+    GPIO3 --> RST_S
+    GPIO2 --> BL_S
+```
+
 **Pin Functions:**
+
 - **VCC**: Power supply (3.3V)
 - **GND**: Ground
 - **DIN (MOSI)**: SPI data input - transmits pixel data
@@ -314,12 +480,14 @@ BL      -> GPIO2  (Backlight)
 - **BL**: Backlight control (HIGH=on, LOW=off)
 
 **SPI Configuration:**
+
 - SPI Mode: 0 (CPOL=0, CPHA=0)
 - Clock Speed: 26 MHz
 - Display Resolution: 80x160 pixels (landscape mode)
 - Color Format: RGB565 (16-bit color, 65,536 colors)
 
 #### st7735s_spi
+
 Displays Ferris and Rust logo images on the color LCD.
 
 ```bash
@@ -327,12 +495,14 @@ cargo run --example st7735s_spi
 ```
 
 **Features:**
+
 - Full RGB565 color support (16-bit, 65K colors)
 - Displays raw RGB565 image format (Ferris)
 - Displays BMP image format (Rust logo)
 - Hardware SPI for fast rendering
 
 #### st7735s_spi_text
+
 Demonstrates text rendering and colorful shapes on the LCD display.
 
 ```bash
@@ -340,6 +510,7 @@ cargo run --example st7735s_spi_text
 ```
 
 **Features:**
+
 - Multiple font sizes (6x10, 9x15 bold)
 - Text styling with colors and backgrounds
 - Drawing colorful primitives (rectangles, circles, lines)
@@ -357,7 +528,7 @@ This module includes a resistive touchscreen (T_CLK, T_CS, T_DIN, T_DO, T_IRQ pi
 #### Wiring for 2.8" TFT SPI 240x320 V1.2 Module
 
 ```
-LCD Pin     -> ESP32-C3-DevKit-RUST-1
+LCD Pin     -> Rust ESP Board
 ----------     ----------------------
 VCC         -> 3.3V
 GND         -> GND
@@ -377,7 +548,45 @@ T_DO        -> (not used)
 T_IRQ       -> (not used)
 ```
 
+```mermaid
+graph LR
+    subgraph ESP32 ["Rust ESP Board"]
+        VCC_M["3.3V"]
+        GND_M["GND"]
+        GPIO5["GPIO5 (CS)"]
+        GPIO3["GPIO3 (RST)"]
+        GPIO4["GPIO4 (DC)"]
+        GPIO7["GPIO7 (MOSI)"]
+        GPIO6["GPIO6 (SCK)"]
+        BL_M["3.3V (BL)"]
+        GPIO1["GPIO1 (MISO)"]
+    end
+
+    subgraph LCD ["ILI9341 LCD"]
+        VCC_S["VCC"]
+        GND_S["GND"]
+        CS_S["CS"]
+        RST_S["RESET"]
+        DC_S["DC"]
+        SDI_S["SDI (MOSI)"]
+        SCK_S["SCK"]
+        LED_S["LED"]
+        SDO_S["SDO (MISO)"]
+    end
+
+    VCC_M --> VCC_S
+    GND_M --> GND_S
+    GPIO5 --> CS_S
+    GPIO3 --> RST_S
+    GPIO4 --> DC_S
+    GPIO7 --> SDI_S
+    GPIO6 --> SCK_S
+    BL_M --> LED_S
+    SDO_S -.-> GPIO1
+```
+
 **Pin Functions:**
+
 - **VCC**: Power supply (3.3V or 5V depending on module)
 - **GND**: Ground
 - **CS**: Chip select for LCD (active low)
@@ -389,12 +598,14 @@ T_IRQ       -> (not used)
 - **SDO (MISO)**: SPI data output (optional, rarely needed)
 
 **SPI Configuration:**
+
 - SPI Mode: 0 (CPOL=0, CPHA=0)
 - Clock Speed: 40 MHz (ILI9341 supports up to 60 MHz)
 - Display Resolution: 240x320 pixels (portrait mode)
 - Color Format: RGB565 (16-bit color, 65,536 colors)
 
 #### ili9341_spi
+
 Displays colorful text and Rust logo on the TFT LCD.
 
 ```bash
@@ -402,6 +613,7 @@ cargo run --example ili9341_spi
 ```
 
 **Features:**
+
 - Full RGB565 color support (16-bit, 65K colors)
 - 240x320 pixel rectangular display
 - Multiple colored text examples
@@ -409,6 +621,7 @@ cargo run --example ili9341_spi
 - High-speed 40 MHz SPI for fast rendering
 
 #### ili9341_spi_text
+
 Demonstrates comprehensive text rendering and colorful shapes on the LCD.
 
 ```bash
@@ -416,6 +629,7 @@ cargo run --example ili9341_spi_text
 ```
 
 **Features:**
+
 - Multiple font sizes (6x10, 9x15 bold, 10x20)
 - Text styling with colors and backgrounds
 - Drawing primitives (rectangles, circles, lines)
@@ -424,6 +638,7 @@ cargo run --example ili9341_spi_text
 - Demonstrates rectangular layout for portrait display
 
 #### zermatt
+
 Displays a full-screen 320x240 landscape image of Zermatt on the ILI9341 display.
 
 ```bash
@@ -431,6 +646,7 @@ cargo run --example zermatt
 ```
 
 **Features:**
+
 - Full-screen landscape image display (320×240)
 - Uses BMP format with tinybmp library
 - Demonstrates landscape orientation (90° rotation)
@@ -438,6 +654,7 @@ cargo run --example zermatt
 - Includes Python script for JPEG to BMP conversion
 
 **Image Conversion:**
+
 ```bash
 python3 examples/convert_jpg_to_bmp.py examples/zermatt_320x240.jpg examples/zermatt_320x240.bmp
 ```
@@ -449,13 +666,14 @@ These examples require a GC9A01 round LCD module (240x240 pixels) connected via 
 **Hardware:** UNI128-240240-RGB-7-V1.0 Display Module (7 pins)
 
 **Important Note:** Despite the module having pins labeled **SCL/SDA**, this is an **SPI display**, not I2C! The presence of DC (Data/Command) and CS (Chip Select) pins confirms it's SPI. The pin labels mean:
+
 - **SCL** = SPI Clock (same as SCK/SCLK)
 - **SDA** = SPI Data (same as MOSI - Master Out Slave In)
 
 #### Wiring for UNI128-240240-RGB-7-V1.0 Module
 
 ```
-LCD Pin -> ESP32-C3-DevKit-RUST-1
+LCD Pin -> Rust ESP Board
 -------    ----------------------
 VCC     -> 3.3V
 GND     -> GND
@@ -466,7 +684,39 @@ CS      -> GPIO5  (Chip Select)
 RST     -> GPIO3  (Reset)
 ```
 
+```mermaid
+graph LR
+    subgraph ESP32 ["Rust ESP Board"]
+        VCC_M["3.3V"]
+        GND_M["GND"]
+        GPIO6["GPIO6 (SCK)"]
+        GPIO7["GPIO7 (MOSI)"]
+        GPIO4["GPIO4 (DC)"]
+        GPIO5["GPIO5 (CS)"]
+        GPIO3["GPIO3 (RST)"]
+    end
+
+    subgraph LCD ["GC9A01 LCD"]
+        VCC_S["VCC"]
+        GND_S["GND"]
+        SCL_S["SCL (SCK)"]
+        SDA_S["SDA (MOSI)"]
+        DC_S["DC"]
+        CS_S["CS"]
+        RST_S["RST"]
+    end
+
+    VCC_M --> VCC_S
+    GND_M --> GND_S
+    GPIO6 --> SCL_S
+    GPIO7 --> SDA_S
+    GPIO4 --> DC_S
+    GPIO5 --> CS_S
+    GPIO3 --> RST_S
+```
+
 **Pin Functions:**
+
 - **VCC**: Power supply (3.3V)
 - **GND**: Ground
 - **SCL**: SPI clock (labeled SCL but it's actually SPI SCK)
@@ -478,6 +728,7 @@ RST     -> GPIO3  (Reset)
 **Note:** This 7-pin module has no separate backlight control pin - the backlight is always on when powered.
 
 **SPI Configuration:**
+
 - SPI Mode: 0 (CPOL=0, CPHA=0)
 - Clock Speed: 60 MHz (GC9A01 supports up to 62.5 MHz)
 - Display Resolution: 240x240 pixels (round/circular)
@@ -485,6 +736,7 @@ RST     -> GPIO3  (Reset)
 - Display Shape: Circular (visible area is round)
 
 #### gc9a01_spi
+
 Displays Ferris and Rust logo images on the round color LCD.
 
 ```bash
@@ -492,6 +744,7 @@ cargo run --example gc9a01_spi
 ```
 
 **Features:**
+
 - Full RGB565 color support (16-bit, 65K colors)
 - 240x240 pixel round display
 - Displays raw RGB565 image format (Ferris)
@@ -500,6 +753,7 @@ cargo run --example gc9a01_spi
 - Uses mipidsi driver for robust display control
 
 #### gc9a01_spi_text
+
 Demonstrates text rendering and colorful shapes optimized for the circular display.
 
 ```bash
@@ -507,6 +761,7 @@ cargo run --example gc9a01_spi_text
 ```
 
 **Features:**
+
 - Multiple font sizes (6x10, 9x15 bold, 10x20)
 - Text styling with colors and backgrounds
 - Circular shapes to match the round display form factor
