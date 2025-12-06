@@ -582,7 +582,7 @@ graph LR
     GPIO7 --> SDI_S
     GPIO6 --> SCK_S
     BL_M --> LED_S
-    SDO_S -.-> GPIO1
+    GPIO1 -.-> SDO_S
 ```
 
 **Pin Functions:**
