@@ -535,15 +535,29 @@ The GP2Y1010AU0F uses an infrared LED and photodetector to measure dust particle
 
 **Sensor Characteristics:**
 
-- Clean air: ~0V to 0.6V
-- Dusty air: 0.6V to 3.5V
-- Sensitivity: 0.5V per 0.1mg/m³
+- Clean air baseline: ~1.35V (with Waveshare board)
+- Dusty air: increases from baseline
+- Sensitivity: 0.5V per 0.1mg/m³ above baseline
+
+**Calibration:**
+
+The example includes voltage offset correction for accurate readings:
+- Default `VOLTAGE_OFFSET = 1.35V` (typical for Waveshare board)
+- Measures clean air baseline and subtracts it before calculating dust density
+- Adjustable in code if your sensor's baseline differs
+- Without offset correction, clean air would incorrectly show as "Poor" quality
 
 **Air Quality Levels:**
 
-- Good: < 0.035 mg/m³
-- Moderate: 0.035 - 0.075 mg/m³
-- Poor: > 0.075 mg/m³
+- Good: < 0.035 mg/m³ (clean indoor air)
+- Moderate: 0.035 - 0.075 mg/m³ (some dust present)
+- Poor: > 0.075 mg/m³ (dusty/smoky air)
+
+**Testing:**
+
+- Clean air: Should read near 0.000 mg/m³
+- Breathe near sensor: Should increase to 0.04-0.08 mg/m³
+- Smoke/incense: Should spike above 0.1 mg/m³
 
 **Output:** ADC raw value, voltage, dust density in mg/m³, running average, and air quality assessment
 
