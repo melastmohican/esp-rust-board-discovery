@@ -488,6 +488,58 @@ cargo run --example mics6814
 - Sensor: MICS6814 (on Pimoroni Enviro+ FeatherWing)
 - Connection: Analog inputs (configured for ESP32-C3 ADC)
 
+#### gp2y1010au0f_dust
+
+Reads dust density (PM2.5/PM10 particles) from the Sharp GP2Y1010AU0F optical dust sensor. This example is configured for the **Waveshare Dust Sensor** module.
+
+```bash
+cargo run --example gp2y1010au0f_dust
+```
+
+**Hardware:**
+
+- Sensor: Waveshare Dust Sensor (Sharp GP2Y1010AU0F)
+- Connection: 4-wire interface (VCC, GND, AOUT, ILED)
+- Voltage: 5V (sensor requires 4.5V-5.5V)
+
+**Wiring:**
+
+```text
+Waveshare Dust Sensor -> ESP32-C3 Rust Board
+----------------------   ---------------------
+VCC (red)             -> 5V/VUSB (via 220µF capacitor to GND)
+GND (black)           -> GND
+AOUT (yellow)         -> GPIO0 (ADC input)
+ILED (blue)           -> GPIO1 (digital output to 150Ω resistor to 5V)
+```
+
+**Required External Components:**
+
+- **150Ω resistor** between ILED and 5V (current limiting for LED)
+- **220µF capacitor** between VCC and GND (power stabilization)
+
+**How it Works:**
+
+The GP2Y1010AU0F uses an infrared LED and photodetector to measure dust particles:
+1. LED is pulsed ON for 0.32ms every 10ms
+2. After 0.28ms delay, the analog output is sampled
+3. Dust particles reflect LED light, increasing the output voltage
+4. Output voltage is proportional to dust density (0.5V per 0.1mg/m³)
+
+**Sensor Characteristics:**
+
+- Clean air: ~0V to 0.6V
+- Dusty air: 0.6V to 3.5V
+- Sensitivity: 0.5V per 0.1mg/m³
+
+**Air Quality Levels:**
+
+- Good: < 0.035 mg/m³
+- Moderate: 0.035 - 0.075 mg/m³
+- Poor: > 0.075 mg/m³
+
+**Output:** ADC raw value, voltage, dust density in mg/m³, running average, and air quality assessment
+
 ### UART Examples
 
 #### pms5003
