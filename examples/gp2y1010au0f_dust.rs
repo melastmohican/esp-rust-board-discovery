@@ -12,37 +12,32 @@
 //!
 //! ## Wiring
 //!
-//! **Important:** This sensor requires 5V power and a 150Ω current-limiting resistor
-//! for the LED, plus a 220µF capacitor for power stabilization.
+//! **Good News:** The Waveshare Dust Sensor breakout board includes all required components
+//! onboard (150Ω resistor, 220µF capacitor, voltage regulator, signal conditioning).
+//! Simply connect the 4-wire cable directly - no additional components needed!
 //!
 //! ```text
-//! Waveshare Dust Sensor -> ESP32-C3 Rust Board
-//! ----------------------   ---------------------
-//! VCC (red)             -> 5V/VUSB (via 220µF capacitor to GND)
-//! GND (black)           -> GND
-//! AOUT (yellow)         -> GPIO0 (ADC input)
-//! ILED (blue)           -> GPIO1 (digital output to 150Ω resistor to 5V)
-//!
-//! Additional components required:
-//! - 150Ω resistor between ILED and 5V (current limiting for LED)
-//! - 220µF capacitor between VCC and GND (power stabilization)
+//! Waveshare Dust Sensor Breakout -> ESP32-C3 Rust Board
+//! --------------------------------  ---------------------
+//! VCC (red)                      -> 5V/VUSB or 3.3V*
+//! GND (black)                    -> GND
+//! AOUT (yellow)                  -> GPIO0 (ADC input)
+//! ILED (blue)                    -> GPIO1 (digital output)
 //! ```
 //!
-//! **Circuit Diagram:**
-//! ```text
-//!     5V/VUSB ----+---- VCC (Sensor)
-//!                 |
-//!              [220µF]
-//!                 |
-//!     GND --------+---- GND (Sensor)
+//! **Note:** The Waveshare board has an onboard PT1301 DC/DC converter that provides
+//! stable 5V to the Sharp sensor from input voltages as low as 2.5V. You can power it
+//! from either 5V/VUSB or 3.3V.
 //!
-//!     5V/VUSB ----[150Ω]---- ILED (Sensor)
-//!                             ^
-//!                             |
-//!     GPIO1 ------------------+ (controls LED via transistor inside sensor)
+//! **Onboard Components (already included on Waveshare breakout):**
+//! - 150Ω resistor for LED current limiting
+//! - 220µF capacitor for power stabilization
+//! - PT1301 DC/DC converter (2.5V-5.5V input → 5V output)
+//! - Transistor Q1 for LED pulse control
+//! - Resistor divider R10(10kΩ) + R6(1kΩ) for output voltage scaling
 //!
-//!     GPIO0 (ADC) ----------- AOUT (Sensor)
-//! ```
+//! **If using the raw Sharp GP2Y1010AU0F sensor (not Waveshare breakout):**
+//! You will need to add external 150Ω resistor and 220µF capacitor yourself.
 //!
 //! ## How it Works
 //!
@@ -123,13 +118,14 @@ fn main() -> ! {
 
     info!("");
     info!("=== Dust Sensor Information ===");
-    info!("Sensor: Sharp GP2Y1010AU0F");
+    info!("Sensor: Sharp GP2Y1010AU0F (Waveshare breakout)");
     info!("Measurement: PM2.5 and PM10 dust particles");
     info!("Timing: LED pulse 0.32ms, sample at 0.28ms, 10ms cycle");
     info!("");
-    info!("Required components:");
-    info!("- 150 Ohm resistor between ILED and 5V");
-    info!("- 220 uF capacitor between VCC and GND");
+    info!("Waveshare board includes all components onboard:");
+    info!("- 150 Ohm resistor, 220 uF capacitor");
+    info!("- PT1301 DC/DC converter (2.5V-5.5V input)");
+    info!("- Signal conditioning circuitry");
     info!("");
 
     delay.delay_millis(1000);

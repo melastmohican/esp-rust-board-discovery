@@ -504,19 +504,26 @@ cargo run --example gp2y1010au0f_dust
 
 **Wiring:**
 
+The Waveshare Dust Sensor breakout board includes all required components onboard. Simply connect the 4-wire cable directly:
+
 ```text
-Waveshare Dust Sensor -> ESP32-C3 Rust Board
-----------------------   ---------------------
-VCC (red)             -> 5V/VUSB (via 220µF capacitor to GND)
-GND (black)           -> GND
-AOUT (yellow)         -> GPIO0 (ADC input)
-ILED (blue)           -> GPIO1 (digital output to 150Ω resistor to 5V)
+Waveshare Dust Sensor Breakout -> ESP32-C3 Rust Board
+--------------------------------  ---------------------
+VCC (red)                      -> 5V/VUSB or 3.3V
+GND (black)                    -> GND
+AOUT (yellow)                  -> GPIO0 (ADC input)
+ILED (blue)                    -> GPIO1 (digital output)
 ```
 
-**Required External Components:**
+**Onboard Components (included on Waveshare breakout):**
 
-- **150Ω resistor** between ILED and 5V (current limiting for LED)
-- **220µF capacitor** between VCC and GND (power stabilization)
+- **150Ω resistor** for LED current limiting
+- **220µF capacitor** for power stabilization
+- **PT1301 DC/DC converter** (2.5V-5.5V input → 5V output for sensor)
+- **Transistor Q1** for LED pulse control
+- **Resistor divider** for output voltage scaling
+
+**Note:** If using the raw Sharp GP2Y1010AU0F sensor (not the Waveshare module), you will need to add external 150Ω resistor and 220µF capacitor.
 
 **How it Works:**
 
