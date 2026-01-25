@@ -119,7 +119,7 @@ cargo run --example bme280_i2c
 
 Simply connect the Qwiic/STEMMA QT cable between the board and sensor - no separate wires needed!
 
-```
+```text
 BME280 Pin -> Rust ESP Board
 ----------    --------------
 GND (black) -> GND
@@ -174,7 +174,7 @@ cargo run --example hs3003_i2c
 
 Simply connect the Qwiic/STEMMA QT cable between the board and Modulino Thermo - no separate wires needed!
 
-```
+```text
 Modulino Pin -> Rust ESP Board
 ------------    --------------
 GND (black)  -> GND
@@ -213,7 +213,7 @@ cargo run --example bh1750_i2c
 
 Simply connect the Qwiic/STEMMA QT cable between the board and sensor - no separate wires needed!
 
-```
+```text
 BH1750 Pin  -> Rust ESP Board
 ----------     --------------
 GND (black) -> GND
@@ -286,7 +286,7 @@ cargo run --example modulino_pixels_i2c
 
 Simply connect the Qwiic/STEMMA QT cable between the board and Modulino Pixels - no separate wires needed!
 
-```
+```text
 Modulino Pin -> Rust ESP Board
 ------------    --------------
 GND (black)  -> GND
@@ -333,6 +333,145 @@ cargo run --example bme280alt_i2c
 
 - Sensor: Pimoroni Enviro+ FeatherWing (BME280)
 - I2C Address: `0x76` (SDO to GND)
+
+#### bmp580_i2c
+
+Reads temperature and atmospheric pressure from the Bosch BMP580 sensor using a custom local driver implementation. This example is configured for the **Adafruit BMP580** connected via **Qwiic/STEMMA QT** cable.
+
+```bash
+cargo run --example bmp580_i2c
+```
+
+**Hardware:**
+
+- Sensor: Adafruit BMP580 (High-performance barometric pressure sensor)
+- Connection: Qwiic/STEMMA QT cable (plug and play I2C connection)
+
+**Wiring with Qwiic/STEMMA QT:**
+
+Simply connect the Qwiic/STEMMA QT cable between the board and BMP580 - no separate wires needed!
+
+```text
+BMP580 Pin  -> Rust ESP Board
+-----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO8
+SDA (blue)  -> GPIO10
+```
+
+**I2C Address:**
+
+- Adafruit BMP580: `0x47` (default)
+- Alternative: `0x46` (SDA pulled to GND/logic low)
+
+**Features:**
+
+- High precision pressure sensing (±0.5 hPa accuracy)
+- Temperature sensing
+- Custom driver implementation (no external crate needed)
+- Normal power mode with 50Hz ODR (default)
+- 4x pressure oversampling for low noise
+
+**Output:** Atmospheric pressure in hPa and temperature in °C
+
+#### bme680_i2c
+
+Reads temperature, humidity, atmospheric pressure, and gas resistance (VOCs) from a BME680 or BME688 sensor. This example is configured for the **Adafruit BME688** breakout board connected via **Qwiic/STEMMA QT** cable.
+
+```bash
+cargo run --example bme680_i2c
+```
+
+**Hardware:**
+
+- Sensor: Adafruit BME688 Temperature Humidity Pressure Gas Sensor
+- Connection: Qwiic/STEMMA QT cable (plug and play I2C connection)
+
+**Wiring with Qwiic/STEMMA QT:**
+
+Simply connect the Qwiic/STEMMA QT cable between the board and sensor - no separate wires needed!
+
+```text
+BME688 Pin  -> Rust ESP Board
+-----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO8
+SDA (blue)  -> GPIO10
+```
+
+**I2C Address:**
+
+- Adafruit BME688: `0x77` (configured in code as `DeviceAddress::Secondary`)
+- Alternative: `0x76` (change to `DeviceAddress::Primary` in code)
+
+**Features:**
+
+- Temperature sensing (-40°C to +85°C)
+- Humidity sensing (0-100% RH)
+- Pressure sensing (300-1100 hPa)
+- Gas resistance measurement for VOC detection (volatile organic compounds)
+- Uses `bosch-bme680` crate for full sensor support
+- Gas resistance ranges from ~1kΩ (polluted air) to ~100MΩ (clean air)
+
+**Output:** Temperature in °C, humidity in %, atmospheric pressure in hPa, and gas resistance in Ohms
+
+#### sgp30_i2c
+
+Reads eCO2 (equivalent CO2) and TVOC (Total Volatile Organic Compounds) from an SGP30 air quality sensor. This example is configured for the **Adafruit SGP30** breakout board connected via **Qwiic/STEMMA QT** cable.
+
+```bash
+cargo run --example sgp30_i2c
+```
+
+**Hardware:**
+
+- Sensor: Adafruit SGP30 Air Quality Sensor Breakout - VOC and eCO2
+- Connection: Qwiic/STEMMA QT cable (plug and play I2C connection)
+
+**Wiring with Qwiic/STEMMA QT:**
+
+Simply connect the Qwiic/STEMMA QT cable between the board and sensor - no separate wires needed!
+
+```text
+SGP30 Pin   -> Rust ESP Board
+-----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO8
+SDA (blue)  -> GPIO10
+```
+
+**I2C Address:**
+
+- SGP30: `0x58` (fixed address, cannot be changed)
+
+**Features:**
+
+- eCO2 (equivalent CO2) measurement: 400-60000 ppm
+- TVOC (Total Volatile Organic Compounds) measurement: 0-60000 ppb
+- Dynamic baseline compensation algorithm
+- On-chip humidity compensation support
+- Baseline values can be stored and restored for faster warm-up
+- Uses `sgp30` crate for full sensor support
+
+**Warm-up Timeline:**
+
+- First 15-20 seconds (15-20 measurements): Fixed baseline values (400 ppm CO2, 0 ppb TVOC)
+- Next 20 minutes (~1200 measurements): Sensor settling period for reliable readings
+- First 12 hours (~43,200 measurements): Baseline calibration period
+- Brand new sensors: 48-hour factory burn-in recommended
+
+**Important Notes:**
+
+- The sensor must be read every 1 second to maintain proper baseline compensation
+- Expose sensor to fresh outdoor air for 10 minutes to help establish baseline
+- Save baseline values after 12+ hours of operation for faster subsequent startups
+- Test VOC detection by breathing near sensor or using hand sanitizer
+- The example shows changes in real-time and displays baseline values every 5 minutes
+
+**Output:** eCO2 in ppm (parts per million) and TVOC in ppb (parts per billion), with change detection and status updates
 
 ### Analog Examples
 
@@ -406,7 +545,7 @@ These examples require an external 128x64 SSD1306 OLED display connected via I2C
 
 #### Wiring for SSD1306 Display
 
-```
+```text
 Display Pin -> Rust ESP Board
 -----------    --------------
 GND (black) -> GND
@@ -894,6 +1033,9 @@ cargo run --example <example_name>
 
 - [ESP-RS Book](https://docs.esp-rs.org/)
 - [ESP-HAL Documentation](https://docs.esp-rs.org/esp-hal/)
+- [BME280 Temperature, Humidity & Pressure](file:///Users/mordor/Src/rust/rust-embedded/esp-rust-board-discovery/examples/bme280_i2c.rs)
+- [BME680/BME688 Temperature, Humidity, Pressure & Gas (VOC)](file:///Users/mordor/Src/rust/rust-embedded/esp-rust-board-discovery/examples/bme680_i2c.rs)
+- [ICM42670 Accel/Gyro](file:///Users/mordor/Src/rust/rust-embedded/esp-rust-board-discovery/examples/icm42670p_i2c.rs)
 - [Rust ESP Board GitHub](https://github.com/esp-rs/esp-rust-board)
 
 ## License

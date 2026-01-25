@@ -52,11 +52,31 @@ dependencies = [
 
 [[package]]
 name = "bitfield"
+version = "0.18.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4c7e6caee68becd795bfd65f1a026e4d00d8f0c2bc9be5eb568e1015f9ce3c34"
+dependencies = [
+ "bitfield-macros 0.18.1",
+]
+
+[[package]]
+name = "bitfield"
 version = "0.19.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "21ba6517c6b0f2bf08be60e187ab64b038438f22dd755614d8fe4d4098c46419"
 dependencies = [
- "bitfield-macros",
+ "bitfield-macros 0.19.4",
+]
+
+[[package]]
+name = "bitfield-macros"
+version = "0.18.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "331afbb18ce7b644c0b428726d369c5dd37ca0b815d72a459fcc2896c3c8ad32"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.111",
 ]
 
 [[package]]
@@ -101,6 +121,17 @@ checksum = "169ac81b9123f316fde5b0e00175294dcdcdd800c1a6c92a4b58caf42a14cf1f"
 dependencies = [
  "embedded-hal 1.0.0",
  "maybe-async-cfg",
+]
+
+[[package]]
+name = "bosch-bme680"
+version = "1.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1c7d78aa5cc3efa061c1514ea12a3e43ef7ece82f784fceb1dd31c12f9d3c011"
+dependencies = [
+ "bitfield 0.18.1",
+ "embedded-hal 1.0.0",
+ "log",
 ]
 
 [[package]]
@@ -595,7 +626,7 @@ version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "54786287c0a61ca0f78cb0c338a39427551d1be229103b4444591796c579e093"
 dependencies = [
- "bitfield",
+ "bitfield 0.19.4",
  "bitflags 2.10.0",
  "bytemuck",
  "cfg-if",
@@ -776,6 +807,7 @@ dependencies = [
  "bh1750",
  "blocking-network-stack",
  "bme280",
+ "bosch-bme680",
  "critical-section",
  "defmt 1.0.1",
  "display-interface-spi",
@@ -796,6 +828,7 @@ dependencies = [
  "panic-rtt-target",
  "pmsx003",
  "rtt-target",
+ "sgp30",
  "shtcx",
  "smart-leds",
  "smoltcp",
@@ -1505,6 +1538,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "28d3b2b1366ec20994f1fd18c3c594f05c5dd4bc44d8bb0c1c632c8d6829481f"
 
 [[package]]
+name = "sensirion-i2c"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "640a03c95c176226cf159ae2727f7fe3245546022639d61459af46d2878aec06"
+dependencies = [
+ "embedded-hal 1.0.0",
+]
+
+[[package]]
 name = "serde"
 version = "1.0.228"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1545,6 +1587,18 @@ dependencies = [
  "ryu",
  "serde",
  "unsafe-libyaml",
+]
+
+[[package]]
+name = "sgp30"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "30fcf17e8a467b8dce367b5681d2bc25c838cc31902906241bf26b7a46e3e8c3"
+dependencies = [
+ "byteorder",
+ "embedded-hal 1.0.0",
+ "num-traits",
+ "sensirion-i2c",
 ]
 
 [[package]]

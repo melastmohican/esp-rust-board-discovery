@@ -26,11 +26,13 @@ smart-leds = "0.4.0"
 ssd1306 = "0.9.0"
 embedded-graphics = "0.8.1"
 bme280 = "0.5.1"
+bosch-bme680 = "1.0.4"
 st7735-lcd = "0.10.0"
 tinybmp = "0.6.0"
 mipidsi = "0.8.0"
 display-interface-spi = "0.5.0"
 bh1750 = "0.1.0"
+sgp30 = "1.0.0"
 blocking-network-stack = { git = "https://github.com/bjoernQ/blocking-network-stack.git", rev = "b3ecefc222d8806edd221f266999ca339c52d34e" }
 esp-bootloader-esp-idf = { version = "0.4.0", features = ["esp32c3"] }
 esp-rtos = { version = "0.2.0", features = ["esp32c3", "esp-radio"] }
@@ -46,7 +48,7 @@ smoltcp = { version = "0.12.0", default-features = false, features = [
 ] }
 embedded-io = { version = "0.6.1", default-features = false }
 pmsx003 = "1.0.0"
-hs3003 = { git = "https://github.com/melastmohican/hs3003-rs", branch = "main"}
+hs3003 = { git = "https://github.com/melastmohican/hs3003-rs", branch = "main" }
 
 [profile.dev]
 # Rust debug is too slow.
