@@ -95,6 +95,11 @@ const CYCLE_TIME_MS: u32 = 10; // Total cycle: 10ms
 const ADC_MAX: u32 = 4095; // 12-bit ADC
 const ADC_VOLTAGE: f32 = 3.3; // Reference voltage
 
+// Calibration constants
+// The Waveshare board has voltage offset - measure in clean air to calibrate
+// Based on typical readings: ~1.35V in clean air
+const VOLTAGE_OFFSET: f32 = 1.35; // Clean air baseline voltage (adjust if needed)
+
 #[main]
 fn main() -> ! {
     rtt_target::rtt_init_defmt!();
@@ -127,6 +132,13 @@ fn main() -> ! {
     info!("- PT1301 DC/DC converter (2.5V-5.5V input)");
     info!("- Signal conditioning circuitry");
     info!("");
+    info!(
+        "Calibration: Voltage offset = {} V (clean air baseline)",
+        VOLTAGE_OFFSET as u32
+    );
+    info!("Note: If readings seem off, adjust VOLTAGE_OFFSET in code");
+    info!("      to match your sensor's clean air voltage reading");
+    info!("");
 
     delay.delay_millis(1000);
 
@@ -154,10 +166,18 @@ fn main() -> ! {
         // Convert ADC reading to voltage
         let voltage = (raw_value as f32 / ADC_MAX as f32) * ADC_VOLTAGE;
 
+        // Subtract baseline voltage to get dust signal
+        let voltage_dust = if voltage > VOLTAGE_OFFSET {
+            voltage - VOLTAGE_OFFSET
+        } else {
+            0.0
+        };
+
         // Calculate dust density in mg/m³
-        // Formula: dust_density = voltage / (0.5V per 0.1mg/m³) * 0.1mg/m³
-        // Simplified: dust_density = voltage * 0.2
-        let dust_density = voltage * 0.2;
+        // Formula from datasheet: sensitivity = 0.5V per 0.1mg/m³
+        // Therefore: dust_density = (voltage_dust / 0.5V) * 0.1mg/m³
+        // Simplified: dust_density = voltage_dust * 0.2
+        let dust_density = voltage_dust * 0.2;
 
         // Update running average
         sample_count += 1;
