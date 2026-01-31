@@ -267,60 +267,6 @@ cargo run --example ltr559_i2c
 
 **Output:** Proximity value and Light level in Lux
 
-#### modulino_pixels_i2c
-
-Controls 8 RGB LEDs on the Arduino Modulino Pixels module. This example is configured for the **Arduino Modulino Pixels** connected via **Qwiic/STEMMA QT** cable.
-
-```bash
-cargo run --example modulino_pixels_i2c
-```
-
-**Hardware:**
-
-- Module: Arduino Modulino Pixels (ABX00109)
-- LEDs: 8x LC8822-2020 addressable RGB LEDs
-- MCU: STM32C011F4 (handles LED control over I2C)
-- Connection: Qwiic/STEMMA QT cable (plug and play I2C connection)
-
-**Wiring with Qwiic/STEMMA QT:**
-
-Simply connect the Qwiic/STEMMA QT cable between the board and Modulino Pixels - no separate wires needed!
-
-```text
-Modulino Pin -> Rust ESP Board
-------------    --------------
-GND (black)  -> GND
-VCC (red)    -> 3.3V
-SCL (yellow) -> GPIO8
-SDA (blue)   -> GPIO10
-```
-
-**I2C Address:**
-
-- Modulino Pixels: `0x36` (7-bit addressing)
-- Note: Some documentation shows `0x6C` (8-bit write address = 0x36 << 1)
-- Address is configurable via software for multiple modules
-
-**Protocol:**
-
-- Each LED: 4 bytes [red, green, blue, 0xE0|brightness]
-- RGB values: 0-255 each
-- Brightness: 0-100 (mapped to 0-31 internally)
-- Control bits: 0xE0 always set
-- Total buffer: 32 bytes for 8 LEDs
-
-**Features:**
-
-- Individual control of 8 RGB LEDs
-- Adjustable brightness per LED
-- Full RGB color support
-- Three demo animations:
-  - Rainbow colors - All 8 LEDs in different colors
-  - Knight Rider effect - Scanning LED with trailing glow
-  - Color fade cycle - Smooth fading through colors
-
-**Output:** Displays colorful LED animations
-
 #### bme280alt_i2c
 
 Reads temperature, humidity, and atmospheric pressure from a BME280 sensor at address `0x76`. This example is configured for the **Pimoroni Enviro+ FeatherWing** or other modules using the alternative I2C address.
@@ -473,6 +419,98 @@ SDA (blue)  -> GPIO10
 
 **Output:** eCO2 in ppm (parts per million) and TVOC in ppb (parts per billion), with change detection and status updates
 
+### Arduino Modulino Examples
+
+These examples demonstrate how to use Arduino Modulino modules with the Rust ESP Board using the `modulino` crate. All modules connect via I2C using the Qwiic/STEMMA QT connector.
+
+**Wiring for all Modulino modules:**
+
+- **Black (GND)** -> GND
+- **Red (VCC)** -> 3.3V
+- **Yellow (SCL)** -> GPIO8
+- **Blue (SDA)** -> GPIO10
+
+#### modulino_buttons_i2c
+
+Reads button states from the Modulino Buttons module and controls its LEDs.
+
+```bash
+cargo run --example modulino_buttons_i2c
+```
+
+**Features:**
+
+- Reads 3 buttons (A, B, C)
+- Controls 3 LEDs corresponding to buttons
+- Interrupt-style edge detection simulation
+
+#### modulino_buzzer_i2c
+
+Plays a melody on the Modulino Buzzer module.
+
+```bash
+cargo run --example modulino_buzzer_i2c
+```
+
+**Features:**
+
+- Plays notes and melodies
+- Uses I2C command interface
+
+#### modulino_distance_i2c
+
+Reads distance from the Modulino Distance (VL53L4CD) Time-of-Flight sensor.
+
+```bash
+cargo run --example modulino_distance_i2c
+```
+
+**Features:**
+
+- High-accuracy distance measurement
+- Millimeter precision
+
+#### modulino_knob_i2c
+
+Reads the rotary encoder value and push-button state from the Modulino Knob.
+
+```bash
+cargo run --example modulino_knob_i2c
+```
+
+**Features:**
+
+- precise rotary encoder reading
+- Configurable range (0-100 in example)
+- Integrated push-button detection
+
+#### modulino_pixels_i2c
+
+Controls 8 RGB LEDs on the Arduino Modulino Pixels module.
+
+```bash
+cargo run --example modulino_pixels_i2c
+```
+
+**Features:**
+
+- Individual control of 8 RGB LEDs
+- Adjustable brightness
+- Demo animations: Rainbow, Knight Rider, Color Fade
+
+#### modulino_thermo_i2c
+
+Reads temperature and humidity from the Modulino Thermo (HS3003) sensor.
+
+```bash
+cargo run --example modulino_thermo_i2c
+```
+
+**Features:**
+
+- Temperature (°C) and Humidity (%) monitoring
+- Uses `modulino` crate driver (alternative to `hs3003_i2c` example)
+
 ### Analog Examples
 
 #### mics6814
@@ -528,6 +566,7 @@ ILED (blue)                    -> GPIO1 (digital output)
 **How it Works:**
 
 The GP2Y1010AU0F uses an infrared LED and photodetector to measure dust particles:
+
 1. LED is pulsed ON for 0.32ms every 10ms
 2. After 0.28ms delay, the analog output is sampled
 3. Dust particles reflect LED light, increasing the output voltage
@@ -542,6 +581,7 @@ The GP2Y1010AU0F uses an infrared LED and photodetector to measure dust particle
 **Calibration:**
 
 The example includes voltage offset correction for accurate readings:
+
 - Default `VOLTAGE_OFFSET = 1.35V` (typical for Waveshare board)
 - Measures clean air baseline and subtracts it before calculating dust density
 - Adjustable in code if your sensor's baseline differs
