@@ -48,7 +48,49 @@ Demonstrates interrupt-driven button handling for more efficient code.
 cargo run --example button-interrupt
 ```
 
-### WS2812 RGB LED2
+### Digital Input Examples
+
+#### hc_sr501
+
+This example demonstrates how to interface with an HC-SR501 PIR motion sensor. It tracks the motion state and logs "Motion detected!" and "Motion ended!" on transitions. It also controls the onboard WS2812 RGB LED on GPIO2 (turns Red when motion is detected).
+
+```bash
+cargo run --example hc_sr501
+```
+
+**Hardware:**
+
+- Sensor: HC-SR501 PIR Motion Sensor
+- Connection: Direct wiring
+
+**Wiring:**
+
+| HC-SR501 Pin | Rust ESP Board | Notes |
+|--------------|----------------|-------|
+| VCC          | 5V / VBUS      | 5V required for sensor |
+| GND          | GND            | |
+| OUT          | GPIO1          | Digital input |
+
+```mermaid
+graph LR
+    subgraph ESP32 ["Rust ESP Board"]
+        V5["5V / VBUS"]
+        GND_M["GND"]
+        GPIO1["GPIO1 (Input)"]
+        GPIO2["GPIO2 (WS2812 LED)"]
+    end
+
+    subgraph PIR ["HC-SR501 Sensor"]
+        VCC_S["VCC"]
+        GND_S["GND"]
+        OUT_S["OUT"]
+    end
+
+    V5 -- Red --> VCC_S
+    GND_M -- Black --> GND_S
+    OUT_S -- Yellow --> GPIO1
+    GPIO2 -.-> |"Onboard LED"| GPIO2
+```
 
 #### rgBlinky
 
