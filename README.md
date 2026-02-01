@@ -484,6 +484,20 @@ cargo run --example modulino_knob_i2c
 - Configurable range (0-100 in example)
 - Integrated push-button detection
 
+#### modulino_latch_relay_i2c
+
+Demonstrates how to control the Arduino Modulino Latch Relay module.
+
+```bash
+cargo run --example modulino_latch_relay_i2c
+```
+
+**Features:**
+
+- Controls a latching relay (maintains state without power)
+- Checks and toggles relay state
+- Uses I2C command interface
+
 #### modulino_pixels_i2c
 
 Controls 8 RGB LEDs on the Arduino Modulino Pixels module.
@@ -510,6 +524,19 @@ cargo run --example modulino_thermo_i2c
 
 - Temperature (°C) and Humidity (%) monitoring
 - Uses `modulino` crate driver (alternative to `hs3003_i2c` example)
+
+#### modulino_vibro_i2c
+
+Demonstrates various vibration patterns on the Arduino Modulino Vibro module.
+
+```bash
+cargo run --example modulino_vibro_i2c
+```
+
+**Features:**
+
+- Different vibration power levels (Gentle to Maximum)
+- Patterns: Pulses, Continuous, Sweeps
 
 ### Analog Examples
 
