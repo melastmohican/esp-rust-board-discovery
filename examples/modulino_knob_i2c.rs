@@ -1,6 +1,6 @@
 //! # Arduino Modulino Knob Example for Rust ESP Board
 //!
-//! This example uses the **modulino** library: https://github.com/melastmohican/modulino-rs
+//! This example uses the **modulino** library: https://crates.io/crates/modulino
 //!
 //! Reads rotary encoder value and button state from the Arduino Modulino Knob module.
 //!

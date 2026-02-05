@@ -1,6 +1,6 @@
 //! # Arduino Modulino Vibro Example for Rust ESP Board
 //!
-//! This example uses the **modulino** library: https://github.com/melastmohican/modulino-rs
+//! This example uses the **modulino** library: https://crates.io/crates/modulino
 //!
 //! Demonstrates various vibration patterns on the Arduino Modulino Vibro module over I2C.
 //!

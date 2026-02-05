@@ -540,6 +540,20 @@ cargo run --example modulino_latch_relay_i2c
 - Checks and toggles relay state
 - Uses I2C command interface
 
+#### modulino_movement_i2c
+
+Reads accelerometer and gyroscope data from the Arduino Modulino Movement module.
+
+```bash
+cargo run --example modulino_movement_i2c
+```
+
+**Features:**
+
+- Reads 3-axis accelerometer (g)
+- Reads 3-axis gyroscope (dps)
+- Uses LSM6DSOX sensor via `modulino` crate
+
 #### modulino_pixels_i2c
 
 Controls 8 RGB LEDs on the Arduino Modulino Pixels module.
@@ -772,7 +786,7 @@ These examples require an Adafruit 128x64 OLED FeatherWing (SH1107) connected vi
 
 #### Wiring for Adafruit OLED FeatherWing
 
-```
+```text
 Display Pin -> Rust ESP Board
 -----------    --------------
 GND         -> GND
@@ -914,6 +928,25 @@ cargo run --example st7735s_spi_text
 - Drawing colorful primitives (rectangles, circles, lines)
 - Multiple colors: white, blue, yellow, green, red, orange
 - Shows "Rust ESP Board" title with graphics
+
+#### enviro_display_spi
+
+**[EXPERIMENTAL/PROBLEMATIC]** Demonstrates driving the ST7735s display on the Pimoroni Enviro+ FeatherWing.
+
+> [!WARNING]
+> **CRITICAL HARDWARE CONFLICT:** This example uses GPIO 18 and 19 for DC and CS pins, which are the **USB D-/D+ pins** on the ESP32-C3-DevKit-RUST-1. Running this example **WILL BREAK YOUR USB CONNECTION** (logs/flashing) until you manually reset the board into bootloader mode.
+>
+> **BACKLIGHT:** The backlight pin is not connected by default on the Rust Board and requires a manual jumper wire.
+
+```bash
+cargo run --example enviro_display_spi
+```
+
+**Features:**
+
+- Reference for `mipidsi` 0.8.0 configuration
+- Handling specific display offsets and color orders
+- Using onboard RGB LED as a status "heartbeat" when USB is lost
 
 ### Display Examples (ILI9341 TFT LCD - SPI)
 
@@ -1217,7 +1250,7 @@ cargo run --example <example_name>
 - [ESP-HAL Documentation](https://docs.esp-rs.org/esp-hal/)
 - [BME280 Temperature, Humidity & Pressure](file:///Users/mordor/Src/rust/rust-embedded/esp-rust-board-discovery/examples/bme280_i2c.rs)
 - [BME680/BME688 Temperature, Humidity, Pressure & Gas (VOC)](file:///Users/mordor/Src/rust/rust-embedded/esp-rust-board-discovery/examples/bme680_i2c.rs)
-- [ICM42670 Accel/Gyro](file:///Users/mordor/Src/rust/rust-embedded/esp-rust-board-discovery/examples/icm42670p_i2c.rs)
+- [ICM42670 Accel/Gyro](file:///Users/mordor/Src/rust/rust-embedded/esp-rust-board-discovery/examples/icm42670p.rs)
 - [Rust ESP Board GitHub](https://github.com/esp-rs/esp-rust-board)
 
 ## License

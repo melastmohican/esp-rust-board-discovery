@@ -1,6 +1,6 @@
 //! # Arduino Modulino Distance Example for Rust ESP Board
 //!
-//! This example uses the **modulino** library: https://github.com/melastmohican/modulino-rs
+//! This example uses the **modulino** library: https://crates.io/crates/modulino
 //!
 //! Reads distance from the Arduino Modulino Distance module (VL53L4CD) over I2C.
 //!
