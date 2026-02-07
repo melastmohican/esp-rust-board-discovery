@@ -50,6 +50,7 @@ embedded-io = { version = "0.6.1", default-features = false }
 pmsx003 = "1.0.0"
 hs3003 = "0.1.1"
 modulino = "0.1.0"
+ld2410 = "1.0.0"
 
 [profile.dev]
 # Rust debug is too slow.

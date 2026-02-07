@@ -10,6 +10,50 @@ This project contains examples and tutorials for programming the Rust ESP Board 
 
 **Board:** ESP32-C3-DevKit-RUST-1 (Rust ESP Board)
 
+[Official Repository](https://github.com/esp-rs/esp-rust-board)
+
+![Pinout](https://github.com/esp-rs/esp-rust-board/raw/master/assets/rust_board_v1_pin-layout.png)
+
+### Pinout
+
+#### Left Side
+
+| Pin Number | Description | SoC |
+|---|---|---|
+| 1 | Reset | EN/CHIP_PU |
+| 2 | 3V3 | |
+| 3 | N/C | |
+| 4 | GND | |
+| 5 | IO0/ADC1-0 | GPIO0 |
+| 6 | IO1/ADC1-1 | GPIO1 |
+| 7 | IO2/ADC1-2 | GPIO2 |
+| 8 | IO3/ADC1-3 | GPIO3 |
+| 9 | IO4/ADC2-0 | GPIO4 |
+| 10 | IO5/ADC2-1 | GPIO5 |
+| 11 | IO6/MTCK | GPIO6 |
+| 12 | IO7/MTDO/LED | GPIO7 |
+| 13 | IO9/LOG | GPIO8 |
+| 14 | IO21/U0RXD | GPIO21 |
+| 15 | IO20/U0TXD | GPIO20 |
+| 16 | IO9/BOOT | GPIO9 |
+
+#### Right Side
+
+| Pin Number | Description | SoC |
+|---|---|---|
+| 1 | VBAT | |
+| 2 | EN [1] | |
+| 3 | VBUS [2] | |
+| 4 | NC | |
+| 5 | NC | |
+| 6 | NC | |
+| 7 | NC | |
+| 8 | NC | |
+| 9 | IO18/USB_D- | GPIO18 |
+| 10 | IO19/USB_D+ | GPIO19 |
+| 11 | IO8/SCL | GPIO8 |
+| 12 | IO10/SDA | GPIO10 |
+
 - **MCU:** ESP32-C3 (RISC-V single-core processor)
 - **On-board peripherals:**
   - WS2812 RGB LED on GPIO2
@@ -713,6 +757,43 @@ graph LR
         GND_S["GND"]
         RX_S["RXD"]
         TX_S["TXD"]
+    end
+
+    VCC_M -- Red --> VCC_S
+    GND_M -- Black --> GND_S
+    GPIO20 -- "MCU TX to Sensor RX" --> RX_S
+    GPIO21 -- "MCU RX from Sensor TX" --> TX_S
+```
+
+#### ld2410
+
+Reads human presence, distance, and energy levels from an HLK-LD2410C mmWave radar sensor connected via UART at 256000 baud.
+
+```bash
+cargo run --example ld2410
+```
+
+**Wiring:**
+
+- **VCC:** 5V / VBUS (sensor requires 5V)
+- **GND:** GND
+- **Sensor TX:** GPIO21 (MCU RX)
+- **Sensor RX:** GPIO20 (MCU TX)
+
+```mermaid
+graph LR
+    subgraph ESP32 ["Rust ESP Board"]
+        VCC_M["5V/VUSB"]
+        GND_M["GND"]
+        GPIO20["GPIO20 (TX)"]
+        GPIO21["GPIO21 (RX)"]
+    end
+
+    subgraph LD2410 ["HLK-LD2410C Sensor"]
+        VCC_S["VCC (5V)"]
+        GND_S["GND"]
+        RX_S["RX"]
+        TX_S["TX"]
     end
 
     VCC_M -- Red --> VCC_S

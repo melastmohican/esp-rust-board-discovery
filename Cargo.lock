@@ -823,6 +823,7 @@ dependencies = [
  "esp-rtos",
  "hs3003",
  "icm42670",
+ "ld2410",
  "mipidsi",
  "modulino",
  "nb 1.1.0",
@@ -1138,6 +1139,16 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 2.0.111",
+]
+
+[[package]]
+name = "ld2410"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "07fa4bbab6a5c2971e56e261e2c81a7d51ee3c575eaf5f25310f93a6acaf72c8"
+dependencies = [
+ "embedded-io 0.6.1",
+ "log",
 ]
 
 [[package]]
