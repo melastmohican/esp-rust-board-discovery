@@ -167,8 +167,7 @@ where
         let integration_time = 50.0;
         let gain = 4.0;
 
-        let lux = est_lux / (integration_time / 100.0) / gain / 10000.0;
-        lux
+        est_lux / (integration_time / 100.0) / gain / 10000.0
     }
 
     /// Helper to write to a register

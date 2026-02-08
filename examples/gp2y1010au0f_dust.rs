@@ -155,10 +155,7 @@ fn main() -> ! {
         delay.delay_micros(SAMPLING_DELAY_US);
 
         // 3. Read analog value
-        let raw_value: u16 = match nb::block!(adc.read_oneshot(&mut aout_pin)) {
-            Ok(v) => v,
-            Err(_) => 0,
-        };
+        let raw_value: u16 = nb::block!(adc.read_oneshot(&mut aout_pin)).unwrap_or_default();
 
         // 4. Turn LED OFF (HIGH signal)
         led_pin.set_high();
@@ -213,7 +210,7 @@ fn main() -> ! {
         info!("Air Quality:  {}", air_quality);
 
         // Reset running average every 100 samples
-        if sample_count % 100 == 0 {
+        if sample_count.is_multiple_of(100) {
             running_avg = 0.0;
             sample_count = 0;
             info!("(Reset running average)");

@@ -85,18 +85,9 @@ fn main() -> ! {
     let adc_max: u32 = 4095u32;
 
     loop {
-        let raw_ox_u16: u16 = match nb::block!(adc.read_oneshot(&mut pin_ox)) {
-            Ok(v) => v,
-            Err(_) => 0,
-        };
-        let raw_red_u16: u16 = match nb::block!(adc.read_oneshot(&mut pin_red)) {
-            Ok(v) => v,
-            Err(_) => 0,
-        };
-        let raw_nh3_u16: u16 = match nb::block!(adc.read_oneshot(&mut pin_nh3)) {
-            Ok(v) => v,
-            Err(_) => 0,
-        };
+        let raw_ox_u16: u16 = nb::block!(adc.read_oneshot(&mut pin_ox)).unwrap_or_default();
+        let raw_red_u16: u16 = nb::block!(adc.read_oneshot(&mut pin_red)).unwrap_or_default();
+        let raw_nh3_u16: u16 = nb::block!(adc.read_oneshot(&mut pin_nh3)).unwrap_or_default();
 
         let raw_ox: u32 = raw_ox_u16 as u32;
         let raw_red: u32 = raw_red_u16 as u32;

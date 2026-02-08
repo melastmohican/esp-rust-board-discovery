@@ -26,8 +26,14 @@ use smoltcp::{
     wire::{DhcpOption, IpAddress},
 };
 
-const SSID: &str = env!("SSID");
-const PASSWORD: &str = env!("PASSWORD");
+const SSID: &str = match option_env!("SSID") {
+    Some(v) => v,
+    None => "test_ssid",
+};
+const PASSWORD: &str = match option_env!("PASSWORD") {
+    Some(v) => v,
+    None => "test_password",
+};
 
 esp_bootloader_esp_idf::esp_app_desc!();
 
@@ -113,7 +119,7 @@ fn main() -> ! {
             Ok(false) => {}
             Err(err) => {
                 println!("{:?}", defmt::Debug2Format(&err));
-                loop {}
+                panic!("Wifi connection failed");
             }
         }
     }

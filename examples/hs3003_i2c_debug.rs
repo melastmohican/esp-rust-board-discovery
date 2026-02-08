@@ -34,7 +34,7 @@ fn main() -> ! {
         .with_sda(sda)
         .with_scl(scl);
 
-    let mut delay = Delay::new();
+    let delay = Delay::new();
 
     info!(
         "I2C initialized. Testing communication with HS3003 at 0x{:02X}",

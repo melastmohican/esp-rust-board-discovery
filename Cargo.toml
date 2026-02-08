@@ -51,6 +51,7 @@ pmsx003 = "1.0.0"
 hs3003 = "0.1.1"
 modulino = "0.1.0"
 ld2410 = "1.0.0"
+scd4x = "0.4.1"
 
 [profile.dev]
 # Rust debug is too slow.

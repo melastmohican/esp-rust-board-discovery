@@ -449,6 +449,33 @@ SDA (blue)  -> GPIO10
 
 **Output:** Temperature in °C, humidity in %, atmospheric pressure in hPa, and gas resistance in Ohms
 
+#### scd40_i2c
+
+Reads CO2 concentration, temperature, and humidity from an SCD40/SCD41 sensor. This example is configured for the **Apollo Automation SCD40 Breakout** (or compatible Sensirion SCD4x) connected via I2C.
+
+```bash
+cargo run --example scd40_i2c
+```
+
+**Hardware:**
+
+- Sensor: SCD40/SCD41 CO2 Sensor
+- Connection: I2C (Qwiic/STEMMA QT recommended)
+
+**Wiring:**
+
+- **SDA:** GPIO 10
+- **SCL:** GPIO 8
+- **VCC:** 3.3V
+- **GND:** GND
+
+**Features:**
+
+- CO2 measurement (ppm)
+- Temperature measurement (°C)
+- Humidity measurement (%RH)
+- Periodic measurement mode (5 seconds)
+
 #### sgp30_i2c
 
 Reads eCO2 (equivalent CO2) and TVOC (Total Volatile Organic Compounds) from an SGP30 air quality sensor. This example is configured for the **Adafruit SGP30** breakout board connected via **Qwiic/STEMMA QT** cable.
