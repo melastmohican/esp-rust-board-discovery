@@ -323,6 +323,57 @@ SDA (blue)  -> GPIO10
 
 **Output:** Light level in lux, cycling through different resolution modes
 
+#### adxl345_i2c
+
+Reads accelerometer data (X, Y, Z) from an ADXL345 sensor over I2C.
+
+```bash
+cargo run --example adxl345_i2c
+```
+
+**Hardware:**
+
+- Sensor: ADXL345 Accelerometer
+- Connection: I2C
+- I2C Address: `0x53` (default) or `0x1D`
+
+**Wiring:**
+
+| Sensor Pin | ESP32-C3 | Notes |
+|------------|----------|-------|
+| VCC        | 3.3V     |       |
+| GND        | GND      |       |
+| SDA        | GPIO10   |       |
+| SCL        | GPIO8    |       |
+| CS         | VCC      | I2C mode (high) |
+| SDO/ALT    | GND      | Address 0x53 (low) |
+
+```mermaid
+graph LR
+    subgraph ESP32 ["Rust ESP Board"]
+        VCC_M["3.3V"]
+        GND_M["GND"]
+        GPIO8["GPIO8 (SCL)"]
+        GPIO10["GPIO10 (SDA)"]
+    end
+
+    subgraph SENSOR ["ADXL345 Sensor"]
+        VCC_S["VCC"]
+        GND_S["GND"]
+        SCL_S["SCL"]
+        SDA_S["SDA"]
+        CS_S["CS"]
+        SDO_S["SDO"]
+    end
+
+    VCC_M --> VCC_S
+    GND_M --> GND_S
+    GPIO8 --> SCL_S
+    GPIO10 --> SDA_S
+    VCC_M --> CS_S
+    GND_M --> SDO_S
+```
+
 #### ltr559_i2c
 
 Reads ambient light (lux) and proximity data from an LTR559 sensor. This example is configured for the **Pimoroni Enviro+ FeatherWing**.

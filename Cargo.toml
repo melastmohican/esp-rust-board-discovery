@@ -14,6 +14,7 @@ defmt = "1.0.1"
 embedded-hal-bus = { version = "0.2.0", features = ["defmt-03"] }
 esp-alloc = "0.9.0"
 nb = "1.0.1"
+adxl345_driver2 = { version = "2.0.1", features = ["no_std"] }
 
 [dev-dependencies]
 shtcx = "1.0.0"

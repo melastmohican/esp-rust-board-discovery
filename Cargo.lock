@@ -12,6 +12,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "adxl345_driver2"
+version = "2.0.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "73db65445e21166a64a7d0dbb4d04f11854e70b0005d8035091f81b229488c89"
+dependencies = [
+ "bitflags 2.10.0",
+ "c2rust-bitfields",
+ "embedded-hal 1.0.0",
+]
+
+[[package]]
 name = "allocator-api2"
 version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -151,6 +162,26 @@ name = "byteorder"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
+
+[[package]]
+name = "c2rust-bitfields"
+version = "0.18.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b43c3f07ab0ef604fa6f595aa46ec2f8a22172c975e186f6f5bf9829a3b72c41"
+dependencies = [
+ "c2rust-bitfields-derive",
+]
+
+[[package]]
+name = "c2rust-bitfields-derive"
+version = "0.18.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d3cbc102e2597c9744c8bd8c15915d554300601c91a079430d309816b0912545"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 1.0.109",
+]
 
 [[package]]
 name = "cfg-if"
@@ -804,6 +835,7 @@ dependencies = [
 name = "esp-rust-board-discovery"
 version = "0.1.0"
 dependencies = [
+ "adxl345_driver2",
  "bh1750",
  "blocking-network-stack",
  "bme280",
