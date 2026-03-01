@@ -634,6 +634,21 @@ cargo run --example modulino_distance_i2c
 - High-accuracy distance measurement
 - Millimeter precision
 
+#### modulino_joystick_i2c
+
+Reads joystick position and button state from the Arduino Modulino Joystick module.
+
+```bash
+cargo run --example modulino_joystick_i2c
+```
+
+**Features:**
+
+- Reads X and Y position
+- Detects push-button state
+- Calculates angle and magnitude
+- Uses I2C command interface
+
 #### modulino_knob_i2c
 
 Reads the rotary encoder value and push-button state from the Modulino Knob.
