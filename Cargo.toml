@@ -53,11 +53,16 @@ hs3003 = "0.1.1"
 modulino = "0.1.0"
 ld2410 = "1.0.0"
 scd4x = "0.4.1"
+libm = "0.2.11"
 
 [profile.dev]
 # Rust debug is too slow.
 # For debug builds always builds with some optimization
 opt-level = "s"
+
+[[example]]
+name = "max7219_8x8_matrix"
+path = "examples/max7219_8x8_matrix.rs"
 
 [profile.release]
 codegen-units = 1        # LLVM can perform better optimizations using a single thread

@@ -1375,6 +1375,61 @@ cargo run --example gc9a01_spi_text
 - Shows "GC9A01 Display" title with circular graphics
 - Demonstrates lines radiating from center
 
+#### max7219_8x8_matrix
+
+A comprehensive demo with 20 animations on a MAX7219 8x8 LED matrix. Logical parity with original RP235x version.
+
+```bash
+cargo run --example max7219_8x8_matrix
+```
+
+**Hardware:**
+
+- Controller: MAX7219 8x8 LED Matrix module
+- Connection: SPI
+
+**Wiring:**
+
+| MAX7219 Pin | Rust ESP Board | Notes |
+|-------------|----------------|-------|
+| VCC         | 5V / VBUS      | |
+| GND         | GND            | |
+| DIN         | GPIO7          | SPI MOSI |
+| CS          | GPIO5          | |
+| CLK         | GPIO6          | SPI SCK |
+
+```mermaid
+graph LR
+    subgraph ESP32 ["Rust ESP Board"]
+        V5["5V / VBUS"]
+        GND_M["GND"]
+        GPIO7["GPIO7 (MOSI)"]
+        GPIO5["GPIO5 (CS)"]
+        GPIO6["GPIO6 (SCK)"]
+    end
+
+    subgraph MATRIX ["MAX7219 8x8 Matrix"]
+        VCC_S["VCC"]
+        GND_S["GND"]
+        DIN_S["DIN"]
+        CS_S["CS"]
+        CLK_S["CLK"]
+    end
+
+    V5 -- Red --> VCC_S
+    GND_M -- Black --> GND_S
+    GPIO7 -- Yellow --> DIN_S
+    GPIO5 -- Orange --> CS_S
+    GPIO6 -- Green --> CLK_S
+```
+
+**Features:**
+
+- 20 classic animations (Bouncing Ball, Pong, Game of Life, etc.)
+- Alphabetical demo sequence
+- 5-second per-animation timing
+- Robust coordinate clipping
+
 ## Dependencies
 
 Key dependencies used in this project:
